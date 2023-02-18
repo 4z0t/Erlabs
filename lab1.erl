@@ -36,7 +36,7 @@ days_count(_) -> 30.
 
 plus_1_rem_7(V) -> (V rem 7) + 1.
 
-is_date(1, 1, 2000) -> 6;
+is_date(1, 1, 1970) -> 4;
 is_date(D, M, Y) when (M == 3) and (D == 1) -> plus_1_rem_7(is_date(28 + is_ves(Y), M - 1, Y));
 is_date(D, M, Y) when (M == 1) and (D == 1) -> plus_1_rem_7(is_date(31, 12, Y - 1));
 is_date(D, M, Y) when D == 1 -> plus_1_rem_7(is_date(days_count(M - 1), M - 1, Y));
