@@ -10,7 +10,8 @@
     dropfirst/1,
     for/4,
     conditional_range/3,
-    sort_by/2
+    sort_by/2,
+    all/2
 ]).
 
 length_or_neg(E) when is_list(E) -> length(E);
@@ -18,7 +19,7 @@ length_or_neg(_) -> -1.
 
 list_lenghts(L) -> lists:filter(fun(N) -> N >= 0 end, lists:map(fun length_or_neg/1, L)).
 
-all(Pred, List) -> 0.
+all(Pred, List) -> length(lists:filter(Pred, List)) == length(List).
 
 min_value(F, N) -> min(lists:map(F, lists:seq(1, N))).
 
