@@ -3,7 +3,7 @@
 -import(lists, [min/1]).
 
 -export([
-    list_lenghts/1,
+    list_lengths/1,
     min_value/2,
     group_by/2,
     prev_and_next/1,
@@ -17,7 +17,7 @@
 length_or_neg(E) when is_list(E) -> length(E);
 length_or_neg(_) -> -1.
 
-list_lenghts(L) -> lists:filter(fun(N) -> N >= 0 end, lists:map(fun length_or_neg/1, L)).
+list_lengths(L) -> lists:filter(fun(N) -> N >= 0 end, lists:map(fun length_or_neg/1, L)).
 
 all(Pred, List) -> length(lists:filter(Pred, List)) == length(List).
 

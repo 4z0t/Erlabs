@@ -1,6 +1,18 @@
 -module(common).
 
--export([filter/2, pow/2, enumerate/1, any/2, droplast/1, partition/2, last/1, seq/2]).
+-export([
+    filter/2,
+    pow/2,
+    enumerate/1,
+    any/2,
+    droplast/1,
+    partition/2,
+    last/1,
+    seq/2,
+    dropwhile/2,
+    takewhile/2,
+    first/1
+]).
 
 filter_(true, E) -> [E];
 filter_(false, _) -> [].
@@ -33,3 +45,18 @@ seq(S, E) -> [S] ++ seq(S + 1, E).
 
 last([H]) -> H;
 last([H | T]) -> last(T).
+
+dropwhile_(Pred, [H|T], true) -> dropwhile(Pred, T);
+dropwhile_(Pred, L, false) -> L.
+
+dropwhile(Pred, []) -> [];
+dropwhile(Pred, L) -> dropwhile_(Pred, L, Pred(first(L))).
+
+first([H]) -> H;
+first([H | T]) -> H.
+
+takewhile_(Pred, [H | T], true) -> [H] ++ takewhile(Pred, T);
+takewhile_(Pred, L, false) -> [].
+
+takewhile(Pred, []) -> [];
+takewhile(Pred, L) -> takewhile_(Pred, L, Pred(first(L))).
