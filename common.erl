@@ -11,7 +11,8 @@
     seq/2,
     dropwhile/2,
     takewhile/2,
-    first/1
+    first/1,
+    append/1
 ]).
 
 filter_(true, E) -> [E];
@@ -20,10 +21,10 @@ filter_(false, _) -> [].
 filter(_, []) -> [];
 filter(Pred, [H | T]) -> filter_(Pred(H), H) ++ filter(Pred, T).
 
-pow(V, 0) -> 1;
+pow(_, 0) -> 1;
 pow(V, P) -> V * pow(V, P - 1).
 
-map(F, []) -> [];
+map(_, []) -> [];
 map(F, [H, T]) -> [F(H)] ++ map(F, T).
 
 enumerate_([], _) -> [];
@@ -35,7 +36,7 @@ append([H | T]) -> H ++ append(T).
 
 any(Pred, List) -> length(filter(Pred, List)) > 0.
 
-droplast([E]) -> [];
+droplast([_]) -> [];
 droplast([H | T]) -> [H] ++ droplast(T).
 
 partition(Pred, L) -> {filter(Pred, L), filter(fun(X) -> not Pred(X) end, L)}.
@@ -44,19 +45,19 @@ seq(S, E) when S > E -> [];
 seq(S, E) -> [S] ++ seq(S + 1, E).
 
 last([H]) -> H;
-last([H | T]) -> last(T).
+last([_ | T]) -> last(T).
 
-dropwhile_(Pred, [H|T], true) -> dropwhile(Pred, T);
-dropwhile_(Pred, L, false) -> L.
+dropwhile_(Pred, [_ | T], true) -> dropwhile(Pred, T);
+dropwhile_(_, L, false) -> L.
 
-dropwhile(Pred, []) -> [];
+dropwhile(_, []) -> [];
 dropwhile(Pred, L) -> dropwhile_(Pred, L, Pred(first(L))).
 
 first([H]) -> H;
-first([H | T]) -> H.
+first([H | _]) -> H.
 
 takewhile_(Pred, [H | T], true) -> [H] ++ takewhile(Pred, T);
-takewhile_(Pred, L, false) -> [].
+takewhile_(_, _, false) -> [].
 
-takewhile(Pred, []) -> [];
+takewhile(_, []) -> [];
 takewhile(Pred, L) -> takewhile_(Pred, L, Pred(first(L))).
