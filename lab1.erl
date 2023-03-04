@@ -30,14 +30,30 @@ to_01(V) when V -> 1;
 to_01(_) -> 0.
 
 is_ves(Y) -> to_01(((Y rem 4 == 0) and (Y rem 100 /= 0)) or (Y rem 400 == 0)).
+is_ves(Y, M) -> to_01(((Y rem 4 == 0) and (Y rem 100 /= 0)) or (Y rem 400 == 0) and (M == 2)).
 
+days_count(2) -> 28;
 days_count(M) when ((M < 8) and (M rem 2 == 1)) or ((M >= 8) and (M rem 2 == 0)) -> 31;
 days_count(_) -> 30.
 
 plus_1_rem_7(V) -> (V rem 7) + 1.
 
-is_date(1, 1, 1970) -> 4;
-is_date(D, M, Y) when (M == 3) and (D == 1) -> plus_1_rem_7(is_date(28 + is_ves(Y), M - 1, Y));
-is_date(D, M, Y) when (M == 1) and (D == 1) -> plus_1_rem_7(is_date(31, 12, Y - 1));
-is_date(D, M, Y) when D == 1 -> plus_1_rem_7(is_date(days_count(M - 1), M - 1, Y));
-is_date(D, M, Y) -> plus_1_rem_7(is_date(D - 1, M, Y)).
+check_date(D, M, Y) ->
+    M_Correct = (M >= 1) and (M =< 12),
+    D_Correct = (days_count(M) + is_ves(Y, M) >= D) and (D >= 1),
+    M_Correct and D_Correct.
+
+get_date(1, 1, 1970) -> 4;
+get_date(D, M, Y) when (M == 3) and (D == 1) -> plus_1_rem_7(get_date(28 + is_ves(Y), M - 1, Y));
+get_date(D, M, Y) when (M == 1) and (D == 1) -> plus_1_rem_7(get_date(31, 12, Y - 1));
+get_date(D, M, Y) when D == 1 -> plus_1_rem_7(get_date(days_count(M - 1), M - 1, Y));
+get_date(D, M, Y) -> plus_1_rem_7(get_date(D - 1, M, Y)).
+
+is_date(D, M, Y) ->
+    Correct = check_date(D, M, Y),
+    if
+        Correct ->
+            get_date(D, M, Y);
+        true ->
+            "wrong date"
+    end.
