@@ -6,42 +6,55 @@
     stop/0
 ]).
 
-start() ->
-    ECHO = whereis(echo),
+checkProc(ProcName, Success, Fail) ->
+    PID = whereis(ProcName),
     if
-        ECHO /= undefined ->
-            io:fwrite("Process is already started!~n"),
-            error;
+        PID == undefined ->
+            Fail(ProcName);
         true ->
+            Success(ProcName)
+    end.
+checkProc(ProcName, Success) ->
+    checkProc(ProcName, Success, fun(Pn) ->
+        io:fwrite("Process \"~s\" wasn't started!~n", [Pn]),
+        error
+    end).
+
+start() ->
+    checkProc(
+        echo,
+        fun(Pn) ->
+            io:fwrite("Process is already started!~n"),
+            error
+        end,
+        fun(Pn) ->
             PID = spawn(fun thread/0),
-            register(echo, PID),
+            register(Pn, PID),
             io:fwrite(
                 "Started~n~p", [PID]
             ),
             ok
-    end.
+        end
+    ).
 
 print(Term) ->
-    echo ! Term,
-    ok.
+    checkProc(echo, fun(Pn) ->
+        Pn ! Term,
+        ok
+    end).
 
 stop() ->
-    PID = whereis(echo),
-    if
-        PID == undefined ->
-            io:fwrite("Process wasnt started!~n"),
-            error;
-        true ->
-            echo ! stop,
-            io:fwrite("Stopped!~n"),
-            ok
-    end.
+    checkProc(echo, fun(Pn) ->
+        Pn ! stop,
+        io:fwrite("Stopped!~n"),
+        ok
+    end).
 
 thread() ->
     receive
         stop ->
             void;
         Term ->
-            io:fwrite("~s~n", [Term]),
+            io:fwrite("~p~n", [Term]),
             thread()
     end.
