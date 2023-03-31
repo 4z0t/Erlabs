@@ -1,6 +1,6 @@
 -module(lab4).
 
--export([start/1, send_to_child/2, stop/0, child_thread/1, parent_thread/1]).
+-export([start/1, send_to_child/2, stop/0, child_thread/1, parent_thread/1, par_partition/3]).
 
 checkProc(ProcName, Success, Fail) ->
     PID = whereis(ProcName),
@@ -95,3 +95,16 @@ stop() ->
             ok
         end
     ).
+
+%%% 
+
+par_partition_thread(Parent, F, List) ->
+    Parent ! lists:partition(F, List).
+
+
+
+par_partition(F, List, Options) ->
+    self(),
+    receive
+        ok -> ok
+    end.
