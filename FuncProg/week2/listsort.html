@@ -1,0 +1,182 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>Mergesort For Linked Lists</title>
+<link rel="stylesheet" type="text/css" 
+href="listsort_files/sitestyle.css" name="Simon Tatham's Home Page 
+Style">
+<style type="text/css">.GleeReaped{ background-color: #fbee7e !important; border: 1px dotted #818181 !important; } .GleeHL{ background-color: #d7fe65 !important; -moz-box-shadow: rgb(177, 177, 177) 0px 0px 9px !important; -moz-box-shadow: rgb(177, 177, 177) 0px 0px 9px !important; padding: 3px !important; color: #1c3249 !important; border: 1px solid #818181 !important; } .GleeHL a{ color: #1c3249 !important; }.GleeThemeDefault{ background-color:#333 !important; color:#fff !important; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif !important; }.GleeThemeWhite{ background-color:#fff !important; color:#000 !important; opacity: 0.85 !important; border: 1px solid #939393 !important; -moz-border-radius: 10px !important; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif !important; }.GleeThemeRuby{ background-color: #530000 !important; color: #f6b0ab !important; font-family: "Lucida Grande", Lucida, Verdana, sans-serif !important; }.GleeThemeGreener{ background-color: #2e5c4f !important; color: #d3ff5a !important; font-family: Georgia, "Times New Roman", Times, serif !important; }.GleeThemeConsole{ font-family: Monaco, Consolas, "Courier New", Courier, mono !important; color: #eafef6 !important; background-color: #111 !important; }.GleeThemeGlee{ background-color: #eb1257 !important; color: #fff300 !important; -moz-box-shadow: #eb1257 0px 0px 8px !important; -moz-box-shadow: #eb1257 0px 0px 8px !important; opacity: 0.8 !important; font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important; }#gleeBox{ line-height:20px; height:auto !important;z-index:100000; position:fixed; left:5%; top:35%; display:none; overflow:auto; width:90%; background-color:#333; opacity:0.65; color:#fff; margin:0; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif; padding:4px 6px; text-align:left; /*rounded corners*/ -moz-border-radius:7px; } #gleeSearchField{ outline:none; width:90%; margin:0; padding:0; margin:3px 0; border:none; height:auto !important;font-size:100px; background:none !important; color:#fff; } #gleeSub{ margin:0 !important; padding:0 !important; font-size:15px !important;font-family:inherit !important;font-weight:normal !important; height:auto !important;line-height:normal !important; } #gleeSubText, #gleeSubURL, #gleeSubActivity{ font-size:15px !important; width:auto !important; font-weight: normal !important; line-height:20px !important; font-family:inherit !important; } #gleeSubText{ float:left; } #gleeSubURL{ display:inline; float:right; } #gleeSubActivity{ color:#ccc; height:10px; display:inline; float:left; padding-left:5px; }</style></head><body
+ style="-moz-user-select: text;">
+<h1 align="center">Mergesort For Linked Lists</h1>
+
+<h2><a name="intro">Introduction</a></h2>
+
+<p>
+Computer science literature is packed full of sorting algorithms,
+and all of them seem to operate on arrays. Everybody knows the
+Sorting Facts Of Life:
+</p><ul>
+<li>
+Bubblesort, Insertion Sort and Selection Sort are bad;
+</li><li>
+Shellsort is better but nowhere near the theoretical <code>O(N log
+N)</code> limit;
+</li><li>
+Quicksort is great when it works, but unreliable;
+</li><li>
+Mergesort is reliably good but requires <code>O(N)</code> auxiliary
+space;
+</li><li>
+Heapsort is reliably good, but unstable, and also about a factor of
+4 slower than Quicksort's best case.
+</li></ul>
+
+<p>
+Nobody tells you what to do if you want to sort something other than
+an array. Binary trees and their ilk are all ready-sorted, but what
+about linked lists?
+
+</p><p>
+It turns out that Mergesort works even better on linked lists than
+it does on arrays. It avoids the need for the auxiliary space, and
+becomes a simple, reliably <code>O(N log N)</code> sorting
+algorithm. And as an added bonus, it's stable too.
+
+</p><h2><a name="algorithm">Algorithm Description</a></h2>
+
+<p>
+Mergesort takes the input list and treats it as a collection of
+small sorted lists. It makes <code>log N</code> passes along the
+list, and in each pass it combines each adjacent pair of small
+sorted lists into one larger sorted list. When a pass only needs to
+do this once, the whole output list must be sorted.
+
+</p><p>
+So here's the algorithm. In each pass, we are merging lists of size
+<code>K</code> into lists of size <code>2K</code>. (Initially
+<code>K</code> equals 1.) So we start by pointing a temporary
+pointer <code>p</code> at the head of the list, and also preparing
+an empty list <code>L</code> which we will add elements to the end
+of as we finish dealing with them. Then:
+
+</p><ul>
+<li>
+If <code>p</code> is null, terminate this pass.
+</li><li>
+Otherwise, there is at least one element in the next pair of
+length-<code>K</code> lists, so increment the number of merges
+performed in this pass.
+</li><li>
+Point another temporary pointer, <code>q</code>, at the same place
+as <code>p</code>. Step <code>q</code> along the list by
+<code>K</code> places, or until the end of the list, whichever comes
+first. Let <code>psize</code> be the number of elements you managed
+to step <code>q</code> past.
+</li><li>
+Let <code>qsize</code> equal <code>K</code>. Now we need to merge a
+list starting at <code>p</code>, of length <code>psize</code>, with
+a list starting at <code>q</code> of length <em>at most</em>
+<code>qsize</code>.
+</li><li>
+So, as long as either the <i>p</i>-list is non-empty
+(<code>psize&nbsp;&gt;&nbsp;0</code>) or the <i>q</i>-list is
+non-empty (<code>qsize&nbsp;&gt;&nbsp;0</code> <em>and</em>
+<code>q</code> points to something non-null):
+<ul>
+<li>
+Choose which list to take the next element from. If either list is
+empty, we must choose from the other one. (By assumption, at least
+one is non-empty at this point.) If both lists are non-empty,
+compare the first element of each and choose the lower one. If the
+first elements compare equal, choose from the <i>p</i>-list. (This
+ensures that any two elements which compare equal are never swapped,
+so stability is guaranteed.)
+</li><li>
+Remove that element, <code>e</code>, from the start of its list, by
+advancing <code>p</code> or <code>q</code> to the next element
+along, and decrementing <code>psize</code> or <code>qsize</code>.
+</li><li>
+Add <code>e</code> to the end of the list <code>L</code> we are
+building up.
+</li></ul>
+</li><li>
+Now we have advanced <code>p</code> until it is where <code>q</code>
+started out, and we have advanced <code>q</code> until it is
+pointing at the next pair of length-<code>K</code> lists to merge.
+So set <code>p</code> to the value of <code>q</code>, and go back to
+the start of this loop.
+</li></ul>
+
+<p>
+As soon as a pass like this is performed and only needs to do one
+merge, the algorithm terminates, and the output list <code>L</code>
+is sorted. Otherwise, double the value of <code>K</code>, and go
+back to the beginning.
+
+</p><p>
+This procedure only uses forward links, so it doesn't need a doubly
+linked list. If it <em>does</em> have to deal with a doubly linked
+list, the only place this matters is when adding another item to
+<code>L</code>.
+
+</p><p>
+Dealing with a circularly linked list is also possible. You just
+have to be careful when stepping along the list. To deal with the
+ambiguity between <code>p==head</code> meaning you've just stepped
+off the end of the list, and <code>p==head</code> meaning you've
+only just started, I usually use an alternative form of the "step"
+operation: first step <code>p</code> to its successor element, and
+then reset it to null if that step made it become equal to the head
+of the list.
+
+</p><p>
+(You can quickly de-circularise a linked list by finding the second
+element, and then breaking the link to it from the first, but this
+moves the whole list round by one before the sorting process. This
+wouldn't matter - we are about to <em>sort</em> the list, after all
+- except that it makes the sort unstable.)
+
+</p><h2><a name="complexity">Complexity</a></h2>
+
+<p>
+Like any self-respecting sort algorithm, this has running time
+<code>O(N log N)</code>. Because this is Mergesort, the worst-case
+running time is still <code>O(N log N)</code>; there are no
+pathological cases.
+
+</p><p>
+Auxiliary storage requirement is small and constant (i.e. a few
+variables within the sorting routine). Thanks to the inherently
+different behaviour of linked lists from arrays, this Mergesort
+implementation avoids the <code>O(N)</code> auxiliary storage cost
+normally associated with the algorithm.
+
+</p><h2><a name="applications">Applications</a></h2>
+
+<p>
+Any situation where you need to sort a linked list.
+
+</p><h2><a name="code">Sample Code</a></h2>
+
+<p>
+Sample code in C is provided
+<a 
+href="http://www.chiark.greenend.org.uk/%7Esgtatham/algorithms/listsort.c">here</a>.
+
+</p><p>
+(<a href="http://www.chiark.greenend.org.uk/%7Esgtatham/algorithms/">back
+ to algorithms index</a>)
+</p>
+
+<hr>
+(comments to <a href="mailto:anakin@pobox.com">anakin@pobox.com</a>)
+<br>
+(thanks to
+<a href="http://www.chiark.greenend.org.uk/">chiark</a>
+for hosting this page)
+<br>
+(last modified on <!--LASTMOD-->Sat Dec 11 09:44:22 2004<!--END-->)
+<div class="GleeThemeDefault" id="gleeBox" style="display: none; top: 
+35%;"><input style="font-size: 50px;" class="GleeThemeDefault" 
+id="gleeSearchField" type="text"><div id="gleeSub"><div id="gleeSubText">Nothing
+ selected</div><div id="gleeSubActivity"></div><div id="gleeSubURL"></div></div></div></body></html>

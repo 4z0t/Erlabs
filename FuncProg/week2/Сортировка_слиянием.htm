@@ -1,0 +1,985 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xml:lang="ru" xmlns="http://www.w3.org/1999/xhtml" 
+lang="ru"><head>
+
+
+<title>Сортировка слиянием — Википедия</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta name="generator" content="MediaWiki 1.16alpha-wmf">
+<link rel="alternate" type="application/x-wiki" title="Править" 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit">
+<link rel="edit" title="Править" 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit">
+<link rel="apple-touch-icon" 
+href="http://ru.wikipedia.org/apple-touch-icon.png">
+<link rel="shortcut icon" href="http://ru.wikipedia.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" 
+href="http://ru.wikipedia.org/w/opensearch_desc.php" title="Википедия 
+(ru)">
+<link rel="copyright" 
+href="http://creativecommons.org/licenses/by-sa/3.0/">
+<link rel="alternate" type="application/rss+xml" title="Википедия — 
+RSS-лента" 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RecentChanges&amp;feed=rss">
+<link rel="alternate" type="application/atom+xml" 
+title="Википедия&nbsp;— Atom-лента" 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RecentChanges&amp;feed=atom">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/shared.css"
+ type="text/css" media="screen">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/commonPrint.css"
+ type="text/css" media="print">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/main.css"
+ type="text/css" media="screen">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/main_002.css"
+ type="text/css" media="handheld">
+<!--[if lt IE 5.5000]><link rel="stylesheet" href="http://bits.wikimedia.org/skins-1.5/monobook/IE50Fixes.css?257z23" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 5.5000]><link rel="stylesheet" href="http://bits.wikimedia.org/skins-1.5/monobook/IE55Fixes.css?257z23" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 6]><link rel="stylesheet" href="http://bits.wikimedia.org/skins-1.5/monobook/IE60Fixes.css?257z23" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="http://bits.wikimedia.org/skins-1.5/monobook/IE70Fixes.css?257z23" type="text/css" media="screen" /><![endif]-->
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/flaggedrevs.css"
+ type="text/css" media="all">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_005.css"
+ type="text/css" media="all">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_003.css"
+ type="text/css" media="print">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index.css"
+ type="text/css" media="handheld">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_004.css"
+ type="text/css" media="all">
+<link rel="stylesheet" 
+href="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_002.css"
+ type="text/css" media="all">
+<script type="text/javascript">
+var skin="monobook",
+stylepath="http://bits.wikimedia.org/skins-1.5",
+wgUrlProtocols="http\\:\\/\\/|https\\:\\/\\/|ftp\\:\\/\\/|irc\\:\\/\\/|gopher\\:\\/\\/|telnet\\:\\/\\/|nntp\\:\\/\\/|worldwind\\:\\/\\/|mailto\\:|news\\:|svn\\:\\/\\/",
+wgArticlePath="/wiki/$1",
+wgScriptPath="/w",
+wgScriptExtension=".php",
+wgScript="/w/index.php",
+wgVariantArticlePath=false,
+wgActionPaths={},
+wgServer="http://ru.wikipedia.org",
+wgCanonicalNamespace="",
+wgCanonicalSpecialPageName=false,
+wgNamespaceNumber=0,
+wgPageName="Сортировка_слиянием",
+wgTitle="Сортировка слиянием",
+wgAction="view",
+wgArticleId=142939,
+wgIsArticle=true,
+wgUserName=null,
+wgUserGroups=null,
+wgUserLanguage="ru",
+wgContentLanguage="ru",
+wgBreakFrames=false,
+wgCurRevisionId=21969124,
+wgVersion="1.16alpha-wmf",
+wgEnableAPI=true,
+wgEnableWriteAPI=true,
+wgSeparatorTransformTable=[",	.", " 	,"],
+wgDigitTransformTable=["", ""],
+wgMainPageTitle="Заглавная страница",
+wgFormattedNamespaces={"-2": "Медиа", "-1": "Служебная", "0": "", "1": "Обсуждение", "2": "Участник", "3": "Обсуждение участника", "4": "Википедия", "5": "Обсуждение Википедии", "6": "Файл", "7": "Обсуждение файла", "8": "MediaWiki", "9": "Обсуждение MediaWiki", "10": "Шаблон", "11": "Обсуждение шаблона", "12": "Справка", "13": "Обсуждение справки", "14": "Категория", "15": "Обсуждение категории", "100": "Портал", "101": "Обсуждение портала"},
+wgNamespaceIds={"медиа": -2, "служебная": -1, "": 0, "обсуждение": 1, "участник": 2, "обсуждение_участника": 3, "википедия": 4, "обсуждение_википедии": 5, "файл": 6, "обсуждение_файла": 7, "mediawiki": 8, "обсуждение_mediawiki": 9, "шаблон": 10, "обсуждение_шаблона": 11, "справка": 12, "обсуждение_справки": 13, "категория": 14, "обсуждение_категории": 15, "портал": 100, "обсуждение_портала": 101, "участница": 2, "обсуждение участницы": 3, "изображение": 6, "обсуждение_изображения": 7, "обсуждение_участницы": 3, "вп": 4, "image": 6, "image_talk": 7},
+wgMWSuggestTemplate="http://ru.wikipedia.org/w/api.php?action=opensearch\x26search={searchTerms}\x26namespace={namespaces}\x26suggest",
+wgDBname="ruwiki",
+wgSearchNamespaces=[0],
+wgMWSuggestMessages=["с советами", "без советов"],
+wgRestrictionEdit=[],
+wgRestrictionMove=[],
+wgFlaggedRevsParams={"tags": {"accuracy": 2}},
+wgStableRevisionId=0,
+wgAjaxReview={"sendingMsg": "Отправка…", "sentMsgOk": "Проверка выполнена!", "sentMsgBad": "Ошибка проверки!", "actioncomplete": "Действие выполнено", "actionfailed": "Действие не выполнено"},
+wgTrackingToken="978fbe30341e6f16e2458f5b678feded",
+wgClickTrackingIsThrottled=true,
+wgNotice="",
+wgNoticeLocal="";
+</script>
+<script src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/wikibits.js" type="text/javascript"></script>
+<script src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/ajax.js" type="text/javascript"></script>
+<script src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/mwsuggest.js" type="text/javascript"></script>
+<script type="text/javascript" src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/centralnotice.js"></script><style type="text/css">
+#centralNotice .siteNoticeSmall{display:none;}
+#centralNotice .siteNoticeSmallAnon{display:none;}
+#centralNotice .siteNoticeSmallUser{display:none;}
+#centralNotice.collapsed .siteNoticeBig{display:none;}
+#centralNotice.collapsed .siteNoticeSmall{display:block;}
+#centralNotice.collapsed .siteNoticeSmallUser{display:block;}
+#centralNotice.collapsed .siteNoticeSmallAnon{display:block;}
+#centralNotice.anonnotice .siteNoticeSmallUser{display:none !important;}
+#centralNotice.usernotice .siteNoticeSmallAnon{display:none !important;}
+</style>
+
+
+<!--[if lt IE 7]><script type="text/javascript" src="http://bits.wikimedia.org/skins-1.5/common/IEFixes.js?257z23"></script>
+	<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+<script src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_002.php" type="text/javascript"></script><script type="text/javascript" src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_005.php"></script><script type="text/javascript" src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_004.php"></script><script type="text/javascript" src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index.php"></script><script type="text/javascript" src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/index_003.php"></script>
+
+<script type="text/javascript" src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/flaggedrevs.js"></script><style type="text/css">.iw-focus {font-weight: bold} .iw-babel {font-style: italic}</style><style type="text/css">.GleeReaped{ background-color: #fbee7e !important; border: 1px dotted #818181 !important; } .GleeHL{ background-color: #d7fe65 !important; -moz-box-shadow: rgb(177, 177, 177) 0px 0px 9px !important; -moz-box-shadow: rgb(177, 177, 177) 0px 0px 9px !important; padding: 3px !important; color: #1c3249 !important; border: 1px solid #818181 !important; } .GleeHL a{ color: #1c3249 !important; }.GleeThemeDefault{ background-color:#333 !important; color:#fff !important; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif !important; }.GleeThemeWhite{ background-color:#fff !important; color:#000 !important; opacity: 0.85 !important; border: 1px solid #939393 !important; -moz-border-radius: 10px !important; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif !important; }.GleeThemeRuby{ background-color: #530000 !important; color: #f6b0ab !important; font-family: "Lucida Grande", Lucida, Verdana, sans-serif !important; }.GleeThemeGreener{ background-color: #2e5c4f !important; color: #d3ff5a !important; font-family: Georgia, "Times New Roman", Times, serif !important; }.GleeThemeConsole{ font-family: Monaco, Consolas, "Courier New", Courier, mono !important; color: #eafef6 !important; background-color: #111 !important; }.GleeThemeGlee{ background-color: #eb1257 !important; color: #fff300 !important; -moz-box-shadow: #eb1257 0px 0px 8px !important; -moz-box-shadow: #eb1257 0px 0px 8px !important; opacity: 0.8 !important; font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important; }#gleeBox{ line-height:20px; height:auto !important;z-index:100000; position:fixed; left:5%; top:35%; display:none; overflow:auto; width:90%; background-color:#333; opacity:0.65; color:#fff; margin:0; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif; padding:4px 6px; text-align:left; /*rounded corners*/ -moz-border-radius:7px; } #gleeSearchField{ outline:none; width:90%; margin:0; padding:0; margin:3px 0; border:none; height:auto !important;font-size:100px; background:none !important; color:#fff; } #gleeSub{ margin:0 !important; padding:0 !important; font-size:15px !important;font-family:inherit !important;font-weight:normal !important; height:auto !important;line-height:normal !important; } #gleeSubText, #gleeSubURL, #gleeSubActivity{ font-size:15px !important; width:auto !important; font-weight: normal !important; line-height:20px !important; font-family:inherit !important; } #gleeSubText{ float:left; } #gleeSubURL{ display:inline; float:right; } #gleeSubActivity{ color:#ccc; height:10px; display:inline; float:left; padding-left:5px; }</style></head><body
+ style="-moz-user-select: text;" class="mediawiki ltr ns-0 ns-subject 
+page-Сортировка_слиянием skin-monobook">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content"><div style="visibility: hidden; display: none; width:
+ 602px; height: 402px; margin: 0px; padding: 0px; background-color: 
+white; position: absolute; right: 2em; top: 1em; border: 1px solid gray;
+ z-index: 13;"><iframe style="z-index: 14; position: absolute; right: 
+1px; top: 1px; width: 600px; height: 400px; margin: 0px; padding: 0px;" 
+frameborder="0" scrolling="no"></iframe><img style="z-index: 15; 
+position: absolute; right: 11px; top: 9px; width: 18px; cursor: 
+pointer;" 
+src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/Button_hide.png"
+ title="закрыть"></div>
+		<a id="top"></a>
+		<div id="siteNotice"><script type="text/javascript">if (wgNotice != '') document.writeln(wgNotice);</script><div
+ id="centralNotice" class="expanded anonnotice"><style type="text/css"> 
+/*
+Styles for  Notices
+*/
+
+.notice-wrapper-stew2010-vote, .notice-collapsed-wrapper-stew2010-vote {
+    width: 100%;
+    margin: 2px auto 0;
+    padding: 0;
+    background: #DDD;
+    font-family: 'Arial', 'Helvetica', 'Tahoma', sans-serif;
+    font-size: 1.0em;
+    font-weight: 200;
+    color: #333;
+}
+
+.notice-wrapper-stew2010-vote {
+    border: 1px solid #BBB;
+    background: #FCFCFC;
+    text-align: left;
+    font-size: 1.0em;
+}
+
+.notice-wrapper-stew2010-vote a {
+    color: #006699;
+}
+
+.trans-box {
+    padding: 0;
+    text-align: right;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+.toggle-box {
+    text-align: right;
+    font-size: 0.8em;
+    padding: 0;
+}
+
+.notice-text-stew2010-vote {
+    margin: 0 auto 5px;
+    padding: 2px 1px 4px;
+    font-size: 1.0em;
+}
+
+.line-ht-fix {
+    line-height: 1em;
+}
+
+#centralNotice.anonnotice .siteNoticeUser,
+#centralNotice.collapsed .siteNoticeUser {
+    display:none !important;
+}
+</style>
+
+<table class="siteNoticeUser notice-wrapper-stew2010-vote" 
+id="notice-wrapper-stew2010-vote">
+   <tbody><tr>
+      <td>
+         <div class="notice-text-stew2010-vote">
+            Начались выборы стюардов Фонда Викимедиа 2010. <a style="" 
+href="http://meta.wikimedia.org/wiki/Stewards/elections_2010">Пожалуйста,
+ проголосуйте.</a>
+         </div>
+      </td>
+      <td class="line-ht-fix">
+         <span class="toggle-box">
+            [<a style="" href="#" onclick="toggleNotice();return false">Свернуть</a>]
+         </span><br>
+         <span class="trans-box">
+            [<a style="" 
+href="http://meta.wikimedia.org/wiki/Stewards/elections_2010/Guidelines#Translators">Помогите
+ с переводом!</a>]
+         </span>
+      </td>
+   </tr>
+</tbody></table>
+<div class="siteNoticeSmallAnon notice-collapsed-wrapper-stew2010-vote">
+</div>
+
+<script type="text/javascript">
+var wgHideStewardVoteNotice = {
+	'notice':null,
+	'min_edit_count':600, // minimum crosswiki edit count for eligibility
+	'min_registration':'2009-11-01T00:00:00Z', // minimum local registration timestamp for eligibility
+	'cookie_key':'StewardVoteEligible_r7',
+	
+	/*********
+	** Log error
+	*********/
+	'log':function( text ) {
+		//if( !window.console || !console.log )
+		//	return;
+		//console.log( 'wgHideStewardVoteNotice: ' + text );
+	},
+	
+	/*********
+	** Initialize script
+	*********/
+	'initialize':function() {
+		/* not logged in */
+		if( !wgUserName )
+			return;
+
+		/* get elements */
+		this.notice = document.getElementById( 'notice-wrapper-stew2010-vote' );
+		if( !this.notice )
+			return this.log( 'could not locate #notice-wrapper-stew2010-vote' );
+		
+		/* already checked */
+		var pos = document.cookie.indexOf( this.cookie_key + '=' );
+		if( pos > -1 ) {
+			if( document.cookie.charAt(pos + this.cookie_key.length + 1) == 0 )
+				this.notice.style.display = 'none';
+			return;
+		}
+				
+		/* initialize AJAX request */
+		this.sendAjaxRequest();
+	},
+	
+	/*********
+	** Send AJAX request
+	*********/	
+	'sendAjaxRequest':function() {
+		var uri = wgServer + wgScriptPath + '/api.php?action=query&meta=globaluserinfo&guiprop=merged|unattached&format=json&guiuser=' + encodeURIComponent( wgUserName );
+		
+		var request = sajax_init_object();
+		request.onreadystatechange = this.onAjaxStateChange;
+		request.open( 'GET', uri, true/*asynchronous*/ );
+		request.send( '' );
+	},
+	
+	/*********
+	** Handle AJAX request state change
+	*********/
+	'onAjaxStateChange':function() {
+		/* request in progress */
+		if( this.readyState != 4 )
+			return;
+			
+		/* request failed */
+		if( this.status != 200 )
+			return this.log( 'AJAX error ' + this.status + ': ' + this.statusText );
+		
+		/* parse */
+		result = eval( '(' + this.responseText + ')' );
+		wgHideStewardVoteNotice.checkEligibility( result );
+	},
+	
+	/*********
+	** Check eligibility
+	*********/
+	'checkEligibility':function( data ) {
+		if( data.error )
+			return this.log( 'API error ' + data.error.code + ': ' + data.error.info );
+		
+		/* merge lists */
+		var wikis = data.query.globaluserinfo.merged;
+		wikis.concat( data.query.globaluserinfo.unattached );
+		if( wikis.length == 0 )
+			return this.log( 'API returned no wikis (how can this happen?)' );
+		
+		/* get edit count & oldest registration date */
+		var edit_count = 0;
+		var oldest_account = wikis[0].timestamp;
+		var eligible;
+
+		for( var i = 0, len = wikis.length; i < len; i++ ) {
+			edit_count += parseInt(wikis[i].editcount);
+			// this.log( wikis[i].wiki + ': edits=' + wikis[i].editcount + ' (total=' + edit_count + '), timestamp=' + wikis[i].timestamp );
+			if( wikis[i].timestamp < oldest_account )
+				oldest_account = wikis[i].timestamp;
+			
+			eligible = (edit_count >= this.min_edit_count && oldest_account <= this.min_registration);
+			if( eligible )
+				break;
+		}
+
+		/* hide notice and store result */
+		this.log( 'checked likely eligibility: ' + eligible + ' (' + edit_count + ' edits, oldest account ' + oldest_account + ')' );
+		if( !eligible ) {
+			this.setCookie( this.cookie_key, '0' );
+			this.notice.style.display = 'none';
+		}
+		else
+			this.setCookie( this.cookie_key, '1' );
+	},
+	
+	/*********
+	** Set cookie
+	*********/
+	'setCookie':function( key, value ) {
+		// set expiry to end of election
+		var expiryDate = new Date();
+		expiryDate.setDate( 29 );
+		
+		// set cookie
+		document.cookie = key + '=' + value + ';expires=' + expiryDate.toGMTString();
+	}
+}
+wgHideStewardVoteNotice.initialize();
+</script></div>
+</div>		<h1 id="firstHeading" class="firstHeading">Сортировка слиянием</h1>
+		<div id="bodyContent"><span class="editsection">[<a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit&amp;section=0"
+ title="Править секцию: 0">править</a>]</span>
+			<h3 id="siteSub">Материал из Википедии — свободной энциклопедии</h3>
+			<div id="contentSub"><div id="mw-revisiontag" 
+class="flaggedrevs_short plainlinks noprint"><span 
+class="fr-icon-current plainlinks"></span><b><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%9F%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0_%D1%81%D1%82%D0%B0%D1%82%D0%B5%D0%B9/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5_%D0%B4%D0%BB%D1%8F_%D1%87%D0%B8%D1%82%D0%B0%D1%82%D0%B5%D0%BB%D0%B5%D0%B9"
+ title="Википедия:Проверка статей/Пояснение для читателей">Текущая 
+версия</a></b> (не проверялась)</div></div>
+									<div id="jump-to-nav">Перейти к: <a href="#column-one">навигация</a>,
+ <a href="#searchInput">поиск</a></div>			<!-- start content -->
+			<p><b>Сортировка слиянием</b> (<a 
+href="http://ru.wikipedia.org/wiki/%D0%90%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9_%D1%8F%D0%B7%D1%8B%D0%BA"
+ title="Английский язык">англ.</a> <i><span xml:lang="en" lang="en">merge
+ sort</span></i>) — алгоритм сортировки, который упорядочивает списки 
+(или другие структуры данных, доступ к элементам которых можно получать 
+только последовательно, например — потоки) в определённом порядке. Эта 
+сортировка — хороший пример использования принципа «<a 
+href="http://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D0%B4%D0%B5%D0%BB%D1%8F%D0%B9_%D0%B8_%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B9_%28%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%29"
+ title="Разделяй и властвуй (программирование)" class="mw-redirect">разделяй
+ и властвуй</a>». Сначала задача разбивается на несколько подзадач 
+меньшего размера. Затем эти задачи решаются с помощью рекурсивного 
+вызова или непосредственно, если их размер достаточно мал. Наконец, их 
+решения комбинируются, и получается решение исходной задачи.</p>
+<p>Для решения задачи сортировки эти три этапа выглядят так:</p>
+<ul>
+<li>1) Сортируемый массив разбивается на две части примерно одинакового 
+размера;</li>
+<li>2) Каждая из получившихся частей сортируется отдельно, например - 
+тем же самым алгоритмом;</li>
+<li>3) Два упорядоченных массива половинного размера соединяются в один.</li>
+</ul>
+<p>Рекурсивное разбиение задачи на меньшие происходит до тех пор, пока 
+размер массива не достигнет единицы (любой массив длины 1 можно считать 
+упорядоченным).</p>
+<p>Нетривиальным этапом является соединение двух упорядоченных массивов в
+ один. Основную идею слияния двух отсортированных массивов можно 
+объяснить на следующем примере. Пусть мы имеем две стопки карт, лежащих 
+рубашками вниз так, что в любой момент мы видим верхнюю карту в каждой 
+из этих стопок. Пусть также, карты в каждой из этих стопок идут сверху 
+вниз в неубывающем порядке. Как сделать из этих стопок одну? На каждом 
+шаге мы берём меньшую из двух верхних карт и кладём её (рубашкой вверх) в
+ результирующую стопку. Когда одна из оставшихся стопок становится 
+пустой, мы добавляем все оставшиеся карты второй стопки к результирующей
+ стопке.</p>
+<p>Псевдокод на C++-подобном языке:</p>
+<pre>L = *In1;
+R = *In2;
+if( L == R )
+{
+ *Out++ = L;
+ In1++;
+ *Out++ = R;
+ In2++;
+}
+else if( L &lt; R )
+{
+ *Out++ = L;
+ In1++;
+}
+else
+{
+ *Out++ = R;
+ In2++;
+}
+</pre>
+<p>Алгоритм был изобретён <a 
+href="http://ru.wikipedia.org/wiki/%D0%A4%D0%BE%D0%BD_%D0%9D%D0%B5%D0%B9%D0%BC%D0%B0%D0%BD,_%D0%94%D0%B6%D0%BE%D0%BD"
+ title="Фон Нейман, Джон" class="mw-redirect">Джоном фон Нейманом</a> в <a
+ href="http://ru.wikipedia.org/wiki/1945" title="1945" 
+class="mw-redirect">1945</a> году.</p>
+<p>Время работы алгоритма порядка O(n * log n) при отсутствии деградации
+ на неудачных случаях, которая есть больное место быстрой сортировки 
+(тоже алгоритм порядка O(n * log n), но только для лучшего случая). 
+Расход памяти выше, чем для быстрой сортировки, при намного более 
+благоприятном паттерне выделения памяти - возможно выделение одного 
+региона памяти с самого начала и отсутствие выделения при дальнейшем 
+исполнении.</p>
+<p>Популярная реализация требует однократно выделяемого временного 
+буфера памяти, равного сортируемому массиву, и не имеет рекурсий. Шаги 
+реализации:</p>
+<ul>
+<li>1) InputArray = сортируемый массив, OutputArray = временный буфер</li>
+<li>2) над каждым отрезком входного массива InputArray[N * 
+MIN_CHUNK_SIZE..(N + 1) * MIN_CHUNK_SIZE) выполняется какой-то 
+вспомогательный алгоритм сортировки, например, <a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A8%D0%B5%D0%BB%D0%BB%D0%B0"
+ title="Сортировка Шелла">сортировка Шелла</a> или qsort</li>
+<li>3) устанавливается ChunkSize = MIN_CHUNK_SIZE</li>
+<li>4) сливаются два отрезка InputArray[N * ChunkSize..(N + 1) * 
+ChunkSize) и InputArray[(N + 1) * ChunkSize..(N + 2) * ChunkSize) 
+попеременным шаганием слева и справа (см. выше), результат помещается в 
+OutputArray[N * ChunkSize..(N + 2) * ChunkSize], и так для всех N, пока 
+не будет достигнут конец массива.</li>
+<li>5) ChunkSize удваивается</li>
+<li>6) если ChunkSize стал &gt;= размера массива - то конец, результат в
+ OutputArray, который (ввиду перестановок, описанных ниже) есть либо 
+сортируемый массив, либо временный буфер, во втором случае он целиком 
+копируется в сортируемый массив.</li>
+<li>7) иначе меняются местами InputArray и OutputArray перестановкой 
+указателей, и все повторяется с пункта 4.</li>
+</ul>
+<p>Такая реализация также поддерживает размещение сортируемого массива и
+ временного буфера в дисковых файлах, т.е. пригодна для сортировки 
+огромных объемов данных. Реализация ORDER BY в СУБД <a 
+href="http://ru.wikipedia.org/wiki/MySQL" title="MySQL">MySQL</a> при 
+отсутствии подходящего индекса устроена именно так (источник: 
+filesort.cc в исходном коде MySQL).</p>
+<p>Пример реализации алгоритма простого двухпутевого слияния на 
+псевдокоде:</p>
+<pre><b>function</b> mergesort(m)
+    <b>var</b> <i>list</i> left, right, result
+    <b>if</b> length(m) ≤ 1
+        <b>return</b> m
+    <b>else</b>
+        middle = length(m) / 2
+        <b>for each</b> x <b>in</b> m <b>up to</b> middle
+            add x to left
+        <b>for each</b> x <b>in</b> m <b>after</b> middle
+            add x to right
+        left = mergesort(left)
+        right = mergesort(right)
+        result = merge(left, right)
+        <b>return</b> result
+    <b>end if</b>
+</pre>
+<p>Есть несколько вариантов функции merge(), наиболее простой вариант 
+может выглядеть как</p>
+<pre><b>function</b> merge(left,right)
+    <b>var</b> <i>list</i> result
+    <b>while</b> length(left) &gt; 0 <b>and</b> length(right) &gt; 0
+        <b>if</b> first(left) ≤ first(right)
+            append first(left) to result
+            left = rest(left)
+        <b>else</b>
+            append first(right) to result
+            right = rest(right)
+        <b>end if</b>
+    <b>if</b> length(left) &gt; 0 
+        append left to result
+    <b>if</b> length(right) &gt; 0 
+        append right to result
+    <b>return</b> result
+</pre>
+<h2><span class="editsection">[<a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit&amp;section=1"
+ title="Править секцию: Литература">править</a>]</span> <span 
+class="mw-headline" 
+id=".D0.9B.D0.B8.D1.82.D0.B5.D1.80.D0.B0.D1.82.D1.83.D1.80.D0.B0">Литература</span></h2>
+<ul>
+<li><i>Ананий В. Левитин</i> <b>Глава 4. Метод декомпозиции: Сортировка 
+слиянием</b> // Алгоритмы: введение в разработку и анализ = Introduction
+ to The Design and Analysis of Algorithms. — М.: <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BB%D1%8C%D1%8F%D0%BC%D1%81_%28%D0%B8%D0%B7%D0%B4%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D1%82%D0%B2%D0%BE%29"
+ title="Вильямс (издательство)">«Вильямс»</a>, 2006. — С.&nbsp;169-172. —
+ <a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:BookSources/5845909872"
+ class="internal mw-magiclink-isbn">ISBN 5-8459-0987-2</a></li>
+<li><i><a 
+href="http://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BC%D0%B5%D0%BD,_%D0%A2%D0%BE%D0%BC%D0%B0%D1%81"
+ title="Кормен, Томас">Кормен, Т.</a>, <a 
+href="http://ru.wikipedia.org/wiki/%D0%9B%D0%B5%D0%B9%D0%B7%D0%B5%D1%80%D1%81%D0%BE%D0%BD,_%D0%A7%D0%B0%D1%80%D0%BB%D1%8C%D0%B7_%D0%AD%D1%80%D0%B8%D0%BA"
+ title="Лейзерсон, Чарльз Эрик">Лейзерсон, Ч.</a>, <a 
+href="http://ru.wikipedia.org/wiki/%D0%A0%D0%B8%D0%B2%D0%B5%D1%81%D1%82,_%D0%A0%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%B4_%D0%9B%D0%B8%D0%BD%D0%BD"
+ title="Ривест, Рональд Линн">Ривест, Р.</a>, <a 
+href="http://ru.wikipedia.org/wiki/%D0%A8%D1%82%D0%B0%D0%B9%D0%BD,_%D0%9A%D0%BB%D0%B8%D1%84%D1%84%D0%BE%D1%80%D0%B4"
+ title="Штайн, Клиффорд">Штайн, К.</a></i> Алгоритмы: построение и 
+анализ = Introduction to Algorithms / Под ред. И. В. Красикова. — 2-е 
+изд. — М.: <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BB%D1%8C%D1%8F%D0%BC%D1%81_%28%D0%B8%D0%B7%D0%B4%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D1%82%D0%B2%D0%BE%29"
+ title="Вильямс (издательство)">Вильямс</a>, 2005. — 1296&nbsp;с. — <a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:BookSources/5845908574"
+ class="internal mw-magiclink-isbn">ISBN 5-8459-0857-4</a></li>
+</ul>
+<h2><span class="editsection">[<a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit&amp;section=2"
+ title="Править секцию: Ссылки">править</a>]</span> <span 
+class="mw-headline" id=".D0.A1.D1.81.D1.8B.D0.BB.D0.BA.D0.B8">Ссылки</span></h2>
+<div class="infobox sisterproject noprint plainlinks" style="width: 
+auto;">
+<div class="floatleft"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:Wikibooks-logo.svg"
+ class="image" title="Логотип Викиучебника"><img title="Логотип 
+Викиучебника" alt="Логотип Викиучебника" 
+src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/40px-Wikibooks-logo.png"
+ height="40" width="40"></a></div>
+Имеется <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D1%83%D1%87%D0%B5%D0%B1%D0%BD%D0%B8%D0%BA"
+ title="Викиучебник">викиучебник</a> по&nbsp;теме<br>
+<b>«<a 
+href="http://ru.wikibooks.org/wiki/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B_%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ class="extiw" title="b:Примеры реализации сортировки слиянием">Примеры 
+реализации сортировки слиянием</a>»</b></div>
+<ul>
+<li><a href="http://algolist.manual.ru/sort/faq/q13.php" class="external
+ text" rel="nofollow">Многофазное слияние на algolist.manual.ru</a></li>
+<li><a href="http://iproc.ru/parallel-programming/lection-6/" 
+class="external text" rel="nofollow">Сортировка слиянием</a>&nbsp;— 
+восходящая сортировка, естественная сортировка, измерение 
+быстродействия.</li>
+</ul>
+<p><br></p>
+<table style="background: none repeat scroll 0% 0% transparent; 
+text-align: left; padding: 2px 0pt;" class="metadata">
+<tbody><tr>
+<td style="padding-right: 4px;"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:LampFlowchart.svg"
+ class="image" title="Информатика"><img title="Информатика" 
+alt="Информатика" 
+src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/35px-LampFlowchart.png"
+ height="48" width="35"></a></td>
+<td><i><span style="white-space: nowrap;">Это <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%97%D0%B0%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8"
+ title="Википедия:Заготовка статьи">незавершённая статья</a>&nbsp;по <a 
+href="http://ru.wikipedia.org/wiki/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B8%D0%BA%D0%B0"
+ title="Информатика">информатике</a>.</span> <span style="white-space: 
+nowrap;">Вы можете помочь проекту, <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0_%D0%B8_%D1%83%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D1%8F"
+ title="Википедия:Правила и указания">исправив и дополнив</a> её.</span></i></td>
+</tr>
+</tbody></table>
+<table id="collapsibleTable0" class="navbox collapsible autocollapse 
+nowraplinks" style="margin: auto;">
+<tbody><tr>
+<th colspan="2" style="text-align: center; width: 100%;"><span 
+style="float: right; font-weight: normal; font-size: smaller;"><a 
+href="javascript:collapseTable(0);" id="collapseButton0">[скрыть]</a></span>
+<div style="float: left; width: 6em; text-align: left;">
+<div class="noprint plainlinksneverexpand" style="background-color: 
+transparent; padding: 0pt; font-size: xx-small; color: rgb(0, 0, 0); 
+white-space: nowrap;"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D1%8B_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8"
+ title="Шаблон:Алгоритмы сортировки"><span style="color: rgb(0, 43, 
+184);" title="Просмотр этого шаблона">п</span></a>·<a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%9E%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5_%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0:%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D1%8B_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8&amp;action=edit&amp;redlink=1"
+ class="new" title="Обсуждение шаблона:Алгоритмы сортировки (страница 
+отсутствует)"><span style="color: rgb(0, 43, 184);" title="Обсуждение 
+этого шаблона">о</span></a>·<a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D1%8B_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8&amp;action=edit"
+ class="external text" rel="nofollow"><span style="color: rgb(0, 43, 
+184);" title="Вы можете отредактировать этот шаблон. Пожалуйста, 
+используйте клавишу предварительного просмотра перед сохранением">р</span></a></div>
+</div>
+<span style="font-size: 110%;"><a 
+href="http://ru.wikipedia.org/wiki/%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8"
+ title="Алгоритм сортировки">Алгоритмы сортировки</a></span></th>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Теория</th>
+<td style="width: 100%;"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D0%BE%D1%80%D0%B8%D1%8F_%D1%81%D0%BB%D0%BE%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8_%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%B8%D0%B9"
+ title="Теория сложности вычислений">Сложность алгоритма</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%C2%ABO%C2%BB_%D0%B1%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B5_%D0%B8_%C2%ABo%C2%BB_%D0%BC%D0%B0%D0%BB%D0%BE%D0%B5"
+ title="«O» большое и «o» малое">О-нотация</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%9E%D1%82%D0%BD%D0%BE%D1%88%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BF%D0%BE%D1%80%D1%8F%D0%B4%D0%BA%D0%B0"
+ title="Отношение порядка">Отношение порядка</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%A3%D1%81%D1%82%D0%BE%D0%B9%D1%87%D0%B8%D0%B2%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Устойчивая сортировка">Устойчивая</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8_%D0%BD%D0%B0_%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%B5_%D1%81%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9&amp;action=edit&amp;redlink=1"
+ class="new" title="Сортировки на основе сравнений (страница 
+отсутствует)">На основе сравнений</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%BD%D1%83%D1%82%D1%80%D0%B5%D0%BD%D0%BD%D1%8F%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Внутренняя сортировка">Внутренняя</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%BD%D0%B5%D1%88%D0%BD%D1%8F%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Внешняя сортировка">Внешняя</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Обменные</th>
+<td style="width: 100%; background: none repeat scroll 0% 0% rgb(240, 
+240, 240);"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%BF%D1%83%D0%B7%D1%8B%D1%80%D1%8C%D0%BA%D0%BE%D0%BC"
+ title="Сортировка пузырьком">Пузырьком</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Сортировка перемешиванием">Перемешиванием</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%93%D0%BD%D0%BE%D0%BC%D1%8C%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Гномья сортировка">Гномья</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%91%D1%8B%D1%81%D1%82%D1%80%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Быстрая сортировка">Быстрая</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Выбором</th>
+<td style="width: 100%;"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%B2%D1%8B%D0%B1%D0%BE%D1%80%D0%BE%D0%BC"
+ title="Сортировка выбором">Выбором</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%9F%D0%B8%D1%80%D0%B0%D0%BC%D0%B8%D0%B4%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Пирамидальная сортировка">Пирамидальная</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Вставками</th>
+<td style="width: 100%; background: none repeat scroll 0% 0% rgb(240, 
+240, 240);"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%B2%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B0%D0%BC%D0%B8"
+ title="Сортировка вставками">Вставками</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%A8%D0%B5%D0%BB%D0%BB%D0%B0"
+ title="Сортировка Шелла">Шелла</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81_%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E_%D0%B4%D0%B2%D0%BE%D0%B8%D1%87%D0%BD%D0%BE%D0%B3%D0%BE_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%B0"
+ title="Сортировка с помощью двоичного дерева">Деревом</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Слиянием</th>
+<td style="width: 100%;"><strong class="selflink">Слиянием</strong>&nbsp;•
+ <a 
+href="http://ru.wikipedia.org/wiki/%D0%A3%D1%81%D1%82%D0%BE%D0%B9%D1%87%D0%B8%D0%B2%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0#.D0.90.D0.BB.D0.B3.D0.BE.D1.80.D0.B8.D1.82.D0.BC.D1.8B_.D1.81.D0.BE.D1.80.D1.82.D0.B8.D1.80.D0.BE.D0.B2.D0.BA.D0.B8_.D1.81.D0.BB.D0.B8.D1.8F.D0.BD.D0.B8.D0.B5.D0.BC_.D0.B1.D0.B5.D0.B7_.D0.B4.D0.BE.D0.BF.D0.BE.D0.BB.D0.BD.D0.B8.D1.82.D0.B5.D0.BB.D1.8C.D0.BD.D0.BE.D0.B9_.D0.BF.D0.B0.D0.BC.D1.8F.D1.82.D0.B8"
+ title="Устойчивая сортировка">Без дополнительной памяти</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Без сравнений</th>
+<td style="width: 100%; background: none repeat scroll 0% 0% rgb(240, 
+240, 240);"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%BF%D0%BE%D0%B4%D1%81%D1%87%D1%91%D1%82%D0%BE%D0%BC"
+ title="Сортировка подсчётом">Подсчётом</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D1%80%D0%B0%D0%B7%D1%80%D1%8F%D0%B4%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Поразрядная сортировка">Поразрядная</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%91%D0%BB%D0%BE%D1%87%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Блочная сортировка">Блочная</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Прочее</th>
+<td style="width: 100%;"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D0%BF%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Топологическая сортировка">Топологическая</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D1%83%D1%8E%D1%89%D0%B8%D0%B5_%D1%81%D0%B5%D1%82%D0%B8&amp;action=edit&amp;redlink=1"
+ class="new" title="Сортирующие сети (страница отсутствует)">Сети</a></td>
+</tr>
+<tr>
+<th style="white-space: nowrap;">Непрактичные</th>
+<td style="width: 100%; background: none repeat scroll 0% 0% rgb(240, 
+240, 240);"><a href="http://ru.wikipedia.org/wiki/Bogosort" 
+title="Bogosort">Bogosort</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/Stooge_sort" title="Stooge sort">Stooge
+ sort</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%93%D0%BB%D1%83%D0%BF%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Глупая сортировка">Глупая</a>&nbsp;• <a 
+href="http://ru.wikipedia.org/wiki/%D0%91%D0%BB%D0%B8%D0%BD%D0%BD%D0%B0%D1%8F_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0"
+ title="Блинная сортировка">Блинная</a></td>
+</tr>
+</tbody></table>
+
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 715/1000000
+Post-expand include size: 24873/2048000 bytes
+Template argument size: 10893/2048000 bytes
+Expensive parser function count: 0/500
+-->
+
+<!-- Saved in parser cache with key ruwiki:pcache:idhash:142939-0!1!0!!ru!2 and timestamp 20100223132632 -->
+<div class="printfooter">
+Источник — «<a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC">http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC</a>»</div>
+			<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Categories"
+ title="Служебная:Categories">Категория</a>: <span dir="ltr"><a 
+href="http://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%90%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D1%8B_%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8"
+ title="Категория:Алгоритмы сортировки">Алгоритмы сортировки</a></span></div><div
+ id="mw-hidden-catlinks" class="mw-hidden-cats-hidden">Скрытая 
+категория: <span dir="ltr"><a 
+href="http://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%9D%D0%B5%D0%B7%D0%B0%D0%B2%D0%B5%D1%80%D1%88%D1%91%D0%BD%D0%BD%D1%8B%D0%B5_%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8_%D0%BF%D0%BE_%D0%B8%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B8%D0%BA%D0%B5"
+ title="Категория:Незавершённые статьи по информатике">Незавершённые 
+статьи по информатике</a></span></div></div>			<!-- end content -->
+						<div class="visualClear"></div>
+		</div>
+	</div>
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Просмотры</h5>
+		<div class="pBody">
+			<ul xml:lang="ru" lang="ru">
+	
+				 <li id="ca-nstab-main" class="selected"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Содержание статьи [alt-shift-c]" accesskey="c">Статья</a></li>
+				 <li id="ca-talk" class="new"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%9E%D0%B1%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5:%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit&amp;redlink=1"
+ title="Обсуждение содержания страницы [alt-shift-t]" accesskey="t">Обсуждение</a></li>
+				 <li id="ca-edit"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=edit"
+ title="Эту статью можно изменять. Перед сохранением изменений, 
+пожалуйста, нажмите кнопку предварительного просмотра для визуальной 
+проверки результата [alt-shift-e]" accesskey="e">Править</a></li>
+				 <li id="ca-history"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;action=history"
+ title="Журнал изменений страницы [alt-shift-h]" accesskey="h">история</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Личные инструменты</h5>
+		<div class="pBody">
+			<ul xml:lang="ru" lang="ru">
+				<li id="pt-optin-try"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:UsabilityInitiativeOptIn&amp;from=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Опробуйте новые возможности" class="no-text-transform">Опробовать
+ бета-версию</a></li>
+				<li id="pt-login"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:UserLogin&amp;returnto=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Здесь можно зарегистрироваться в системе, но это необязательно. 
+[alt-shift-o]" accesskey="o">Представиться / зарегистрироваться</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: 
+url(&quot;http://upload.wikimedia.org/wikipedia/ru/b/bc/Wiki.png&quot;);"
+ 
+href="http://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0"
+ title="Заглавная страница"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+	<div class="generated-sidebar portlet" id="p-navigation">
+		<h5 xml:lang="ru" lang="ru">Навигация</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-mainpage"><a 
+href="http://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0"
+ title="Перейти на заглавную страницу [alt-shift-z]" accesskey="z">Заглавная
+ страница</a></li>
+				<li id="n-browse"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%9F%D0%BE%D0%B8%D1%81%D0%BA_%D0%BF%D0%BE_%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F%D0%BC"
+ title="Поиск по категориям">Рубрикация</a></li>
+				<li id="n-index"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%90%D0%BB%D1%84%D0%B0%D0%B2%D0%B8%D1%82%D0%BD%D1%8B%D0%B9_%D1%83%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D1%8C"
+ title="Поиск по двум первым буквам">Указатель А — Я</a></li>
+				<li id="n-featured"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%98%D0%B7%D0%B1%D1%80%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5_%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8"
+ title="Статьи, считающиеся лучшими статьями проекта">Избранные статьи</a></li>
+				<li id="n-randompage"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Random"
+ title="Посмотреть случайную страницу [alt-shift-x]" accesskey="x">Случайная
+ статья</a></li>
+				<li id="n-currentevents"><a 
+href="http://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D1%80%D1%82%D0%B0%D0%BB:%D0%A2%D0%B5%D0%BA%D1%83%D1%89%D0%B8%D0%B5_%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D1%8F"
+ title="Статьи о текущих событиях в мире">Текущие события</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet">
+		<h5 xml:lang="ru" lang="ru"><label for="searchInput">Поиск</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/w/index.php" id="searchform">
+				<input name="title" value="Служебная:Search" type="hidden">
+				<input autocomplete="off" id="searchInput" title="Искать это слово" 
+accesskey="f" name="search">
+				<input name="go" class="searchButton" id="searchGoButton" 
+value="Перейти" title="Перейти к странице, имеющей в точности такое 
+название" type="submit">&nbsp;
+				<input name="fulltext" class="searchButton" id="mw-searchButton" 
+value="Найти" title="Найти страницы, содержащие указанный текст" 
+type="submit">
+			</form>
+		</div>
+	</div>
+	<div class="generated-sidebar portlet" id="p-participation">
+		<h5 xml:lang="ru" lang="ru">Участие</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-bug_in_article"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%A1%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D0%BD%D0%B8%D1%8F_%D0%BE%D0%B1_%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0%D1%85">Сообщить
+ об ошибке</a></li>
+				<li id="n-portal"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%9F%D0%BE%D1%80%D1%82%D0%B0%D0%BB_%D1%81%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B0"
+ title="О проекте, о том, что вы можете сделать, где что находится">Портал
+ сообщества</a></li>
+				<li id="n-forum"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%A4%D0%BE%D1%80%D1%83%D0%BC"
+ title="Форум участников Википедии">Форум</a></li>
+				<li id="n-recentchanges"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RecentChanges"
+ title="Список последних изменений [alt-shift-r]" accesskey="r">Свежие 
+правки</a></li>
+				<li id="n-newpages"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:NewPages"
+ title="Список недавно созданных страниц">Новые страницы</a></li>
+				<li id="n-help"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%A1%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0"
+ title="Справочник по проекту «Википедия»">Справка</a></li>
+				<li id="n-sitesupport"><a 
+href="http://wikimediafoundation.org/wiki/Global_Support/ru" 
+title="Поддержите нас">Пожертвования</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="generated-sidebar portlet" id="p-coll-print_export">
+		<h5 xml:lang="ru" lang="ru">Печать/экспорт</h5>
+		<div class="pBody">
+<ul id="collectionPortletList"><li id="coll-create_a_book"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Book&amp;bookcmd=book_creator&amp;referer=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0+%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Создать книгу или коллекцию статей" rel="nofollow">Создать книгу</a></li><li
+ id="coll-download-as-rl"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Book&amp;bookcmd=render_article&amp;arttitle=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0+%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;oldid=21969124&amp;writer=rl"
+ title="Загрузить PDF версию этой вики-страницы" rel="nofollow">Загрузить
+ как PDF</a></li><li id="t-print"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;printable=yes"
+ title="Версия этой страницы для печати [alt-shift-p]" accesskey="p">Версия
+ для печати</a></li></ul>		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5 xml:lang="ru" lang="ru">Инструменты</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:WhatLinksHere/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Список всех страниц, которые ссылаются на эту страницу 
+[alt-shift-j]" accesskey="j">Ссылки сюда</a></li>
+				<li id="t-recentchangeslinked"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RecentChangesLinked/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC"
+ title="Последние изменения в страницах, на которые ссылается эта 
+страница [alt-shift-k]" accesskey="k">Связанные правки</a></li>
+<li id="t-specialpages"><a 
+href="http://ru.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:SpecialPages"
+ title="Список служебных страниц [alt-shift-q]" accesskey="q">Спецстраницы</a></li>
+				<li id="t-permalink"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;oldid=21969124"
+ title="Постоянная ссылка на эту версию страницы">Постоянная ссылка</a></li><li
+ id="t-cite"><a 
+href="http://ru.wikipedia.org/w/index.php?title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:Cite&amp;page=%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC&amp;id=21969124"
+ title="Информация о том, как цитировать эту страницу">Цитировать 
+страницу</a></li>			</ul>
+		</div>
+	</div>
+	<div id="p-lang" class="portlet">
+		<h5 xml:lang="ru" lang="ru">На других языках</h5>
+		<div class="pBody">
+			<ul>
+				<li class="interwiki-ar"><a 
+href="http://ar.wikipedia.org/wiki/%D8%AA%D8%B5%D9%86%D9%8A%D9%81_%D8%AF%D9%85%D8%AC%D9%8A">العربية</a></li>
+				<li class="interwiki-bg"><a 
+href="http://bg.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%B0%D0%BD%D0%B5_%D1%87%D1%80%D0%B5%D0%B7_%D1%81%D0%BB%D0%B8%D0%B2%D0%B0%D0%BD%D0%B5">Български</a></li>
+				<li class="interwiki-cs"><a 
+href="http://cs.wikipedia.org/wiki/Merge_sort">Česky</a></li>
+				<li class="interwiki-de"><a 
+href="http://de.wikipedia.org/wiki/Mergesort">Deutsch</a></li>
+				<li class="interwiki-en"><a 
+href="http://en.wikipedia.org/wiki/Merge_sort">English</a></li>
+				<li class="interwiki-eo"><a 
+href="http://eo.wikipedia.org/wiki/Kunfanda_ordigo">Esperanto</a></li>
+				<li class="interwiki-es"><a 
+href="http://es.wikipedia.org/wiki/Ordenamiento_por_mezcla">Español</a></li>
+				<li class="interwiki-fa"><a 
+href="http://fa.wikipedia.org/wiki/%D9%85%D8%B1%D8%AA%D8%A8%E2%80%8C%D8%B3%D8%A7%D8%B2%DB%8C_%D8%A7%D8%AF%D8%BA%D8%A7%D9%85%DB%8C">فارسی</a></li>
+				<li class="interwiki-fi"><a 
+href="http://fi.wikipedia.org/wiki/Lomituslajittelu">Suomi</a></li>
+				<li class="interwiki-fr"><a 
+href="http://fr.wikipedia.org/wiki/Tri_fusion">Français</a></li>
+				<li class="interwiki-he"><a 
+href="http://he.wikipedia.org/wiki/%D7%9E%D7%99%D7%95%D7%9F_%D7%9E%D7%99%D7%96%D7%95%D7%92">עברית</a></li>
+				<li class="interwiki-id"><a 
+href="http://id.wikipedia.org/wiki/Merge_sort">Bahasa Indonesia</a></li>
+				<li class="interwiki-is"><a 
+href="http://is.wikipedia.org/wiki/Sameiningarr%C3%B6%C3%B0un">Íslenska</a></li>
+				<li class="interwiki-it"><a 
+href="http://it.wikipedia.org/wiki/Merge_sort">Italiano</a></li>
+				<li class="interwiki-ja"><a 
+href="http://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88">日
+本語</a></li>
+				<li class="interwiki-ko"><a 
+href="http://ko.wikipedia.org/wiki/%ED%95%A9%EB%B3%91_%EC%A0%95%EB%A0%AC">한
+국어</a></li>
+				<li class="interwiki-lb"><a 
+href="http://lb.wikipedia.org/wiki/Mergesort">Lëtzebuergesch</a></li>
+				<li class="interwiki-lt"><a 
+href="http://lt.wikipedia.org/wiki/S%C4%85lajos_rikiavimo_algoritmas">Lietuvių</a></li>
+				<li class="interwiki-ml"><a 
+href="http://ml.wikipedia.org/wiki/%E0%B4%AE%E0%B5%86%E0%B5%BC%E0%B4%9C%E0%B5%8D_%E0%B4%B8%E0%B5%8B%E0%B5%BC%E0%B4%9F%E0%B5%8D%E0%B4%9F%E0%B5%8D">മലയാളം</a></li>
+				<li class="interwiki-nl"><a 
+href="http://nl.wikipedia.org/wiki/Mergesort">Nederlands</a></li>
+				<li class="interwiki-no"><a 
+href="http://no.wikipedia.org/wiki/Sorteringsalgoritme#Flettesortering">‪Norsk
+ (bokmål)‬</a></li>
+				<li class="interwiki-pl"><a 
+href="http://pl.wikipedia.org/wiki/Sortowanie_przez_scalanie">Polski</a></li>
+				<li class="interwiki-pt"><a 
+href="http://pt.wikipedia.org/wiki/Merge_sort">Português</a></li>
+				<li class="interwiki-ro"><a 
+href="http://ro.wikipedia.org/wiki/Merge_sort">Română</a></li>
+				<li class="interwiki-sk"><a 
+href="http://sk.wikipedia.org/wiki/Triedenie_zlu%C4%8Dovan%C3%ADm">Slovenčina</a></li>
+				<li class="interwiki-sl"><a 
+href="http://sl.wikipedia.org/wiki/Urejanje_z_zlivanjem">Slovenščina</a></li>
+				<li class="interwiki-tr"><a 
+href="http://tr.wikipedia.org/wiki/Birle%C5%9Ftirmeli_s%C4%B1ralama">Türkçe</a></li>
+				<li class="interwiki-uk"><a 
+href="http://uk.wikipedia.org/wiki/%D0%A1%D0%BE%D1%80%D1%82%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F_%D0%B7%D0%BB%D0%B8%D1%82%D1%82%D1%8F%D0%BC">Українська</a></li>
+				<li class="interwiki-vi"><a 
+href="http://vi.wikipedia.org/wiki/S%E1%BA%AFp_x%E1%BA%BFp_tr%E1%BB%99n">Tiếng
+ Việt</a></li>
+				<li class="interwiki-zh"><a 
+href="http://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">中
+文</a></li>
+			</ul>
+		</div>
+	</div>
+		</div><!-- end of the left (by default at least) column -->
+			<div class="visualClear"></div>
+			<div id="footer">
+				<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img 
+title="Powered by MediaWiki" 
+src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/poweredby_mediawiki_88x31.png"
+ alt="Powered by MediaWiki" height="31" width="88"></a></div>
+				<div id="f-copyrightico"><a href="http://wikimediafoundation.org/"><img
+ title="Wikimedia Foundation" 
+src="%D0%A1%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D1%81%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%D0%BC_files/wikimedia-button.png"
+ alt="Wikimedia Foundation" height="31" width="88"></a></div>
+			<ul id="f-list">
+					<li id="lastmod"> Последнее изменение этой страницы: 23:37, 6 
+февраля 2010.</li>
+					<li id="copyright">Текст доступен на условиях лицензии <a 
+href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons 
+Attribution/Share-Alike</a>, в отдельных случаях могут действовать 
+дополнительные условия. Подробнее см. <a 
+href="http://wikimediafoundation.org/wiki/Terms_of_Use/ru">Условия 
+использования</a>.</li>
+					<li id="privacy"><a 
+href="http://wikimediafoundation.org/wiki/%D0%9F%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B4%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8"
+ title="wikimedia:Политика конфиденциальности">Политика 
+конфиденциальности</a></li>
+					<li id="about"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5"
+ title="Википедия:Описание">Описание Википедии</a></li>
+					<li id="disclaimer"><a 
+href="http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%9E%D1%82%D0%BA%D0%B0%D0%B7_%D0%BE%D1%82_%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8"
+ title="Википедия:Отказ от ответственности">Отказ от ответственности</a></li>
+			</ul>
+		</div>
+</div>
+
+<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
+<!-- Served by srv109 in 0.619 secs. --><div class="GleeThemeDefault" 
+id="gleeBox" style="display: none; top: 35%;"><input style="font-size: 
+50px;" class="GleeThemeDefault" id="gleeSearchField" type="text"><div 
+id="gleeSub"><div id="gleeSubText">Nothing selected</div><div 
+id="gleeSubActivity"></div><div id="gleeSubURL"></div></div></div></body></html>
