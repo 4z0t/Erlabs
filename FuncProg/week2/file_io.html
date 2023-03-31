@@ -1,0 +1,1258 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!-- This file was generated from index.ehtml by the Erlang program 'ehtml' -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ############################################################ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <title>Getting started with Erlang</title>
+  <meta name="description" content="Erlang programming examples">
+  <meta name="keywords" content="erlang functional programming 
+fault-tolerant
+                                 distributed multi-platform portable 
+software">
+  <link rel="StyleSheet" href="file_io_files/erlang.css" type="text/css">
+<style type="text/css">.GleeReaped{ background-color: #fbee7e !important; border: 1px dotted #818181 !important; } .GleeHL{ background-color: #d7fe65 !important; -moz-box-shadow: rgb(177, 177, 177) 0px 0px 9px !important; -moz-box-shadow: rgb(177, 177, 177) 0px 0px 9px !important; padding: 3px !important; color: #1c3249 !important; border: 1px solid #818181 !important; } .GleeHL a{ color: #1c3249 !important; }.GleeThemeDefault{ background-color:#333 !important; color:#fff !important; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif !important; }.GleeThemeWhite{ background-color:#fff !important; color:#000 !important; opacity: 0.85 !important; border: 1px solid #939393 !important; -moz-border-radius: 10px !important; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif !important; }.GleeThemeRuby{ background-color: #530000 !important; color: #f6b0ab !important; font-family: "Lucida Grande", Lucida, Verdana, sans-serif !important; }.GleeThemeGreener{ background-color: #2e5c4f !important; color: #d3ff5a !important; font-family: Georgia, "Times New Roman", Times, serif !important; }.GleeThemeConsole{ font-family: Monaco, Consolas, "Courier New", Courier, mono !important; color: #eafef6 !important; background-color: #111 !important; }.GleeThemeGlee{ background-color: #eb1257 !important; color: #fff300 !important; -moz-box-shadow: #eb1257 0px 0px 8px !important; -moz-box-shadow: #eb1257 0px 0px 8px !important; opacity: 0.8 !important; font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important; }#gleeBox{ line-height:20px; height:auto !important;z-index:100000; position:fixed; left:5%; top:35%; display:none; overflow:auto; width:90%; background-color:#333; opacity:0.65; color:#fff; margin:0; font-family: Calibri, "Lucida Grande", Lucida, Arial, sans-serif; padding:4px 6px; text-align:left; /*rounded corners*/ -moz-border-radius:7px; } #gleeSearchField{ outline:none; width:90%; margin:0; padding:0; margin:3px 0; border:none; height:auto !important;font-size:100px; background:none !important; color:#fff; } #gleeSub{ margin:0 !important; padding:0 !important; font-size:15px !important;font-family:inherit !important;font-weight:normal !important; height:auto !important;line-height:normal !important; } #gleeSubText, #gleeSubURL, #gleeSubActivity{ font-size:15px !important; width:auto !important; font-weight: normal !important; line-height:20px !important; font-family:inherit !important; } #gleeSubText{ float:left; } #gleeSubURL{ display:inline; float:right; } #gleeSubActivity{ color:#ccc; height:10px; display:inline; float:left; padding-left:5px; }</style></head><body
+ style="-moz-user-select: text;" bgcolor="#ffffff">
+
+
+
+  <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" 
+width="100%">
+    <tbody><tr bgcolor="#336699">
+      <td class="logo" align="right">
+        <font color="#ffffff" face="Verdana, Arial, Helvetica" size="+2">
+          Open Source Erlang
+        </font>
+      </td>
+      <td align="right" valign="top" width="1%">
+        <img title="corner" src="file_io_files/corner.htm" alt="corner" 
+border="0" height="34" width="10">
+      </td>
+    </tr>
+    <!-- Google Custom Search BEGIN, interleaved with the table row -->
+    <form action="http://www.google.com/cse" id="cse-search-box"></form>
+      <tr bgcolor="#add8e6">
+        <td align="right" valign="bottom">
+          <div>
+            <input name="cx" value="010487801555046103524:-pqkh7harpq" 
+type="hidden">
+            <input name="ie" value="UTF-8" type="hidden">
+            <input name="q" size="31" type="text">
+            <input name="sa" value="Search" type="submit">
+          </div>
+        </td>
+        <td></td>
+      </tr>
+    
+    <script type="text/javascript" src="file_io_files/brand.htm"></script>
+    <!-- Google Custom Search END, interleaved with the table row -->
+  </tbody></table>
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td valign="top" width="135">
+      <table>
+	<tbody><tr>
+	  <td>
+	    <a href="http://www.erlang.org/index.html"><img title="Home" 
+src="file_io_files/erlang-logo.png" alt="Home" border="0"></a>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <span class="menu">
+	      <br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/about.html">About
+ erlang.org</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/download.html">Downloads</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/links.html">Links</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/faq.html">FAQs
+ + mailing lists</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/eep.html">Enhancements</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/starting.html">Getting
+ started</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/doc.html">Documentation</a><br>
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/examples.html">Examples</a><br>
+<!--
+	      &middot;&nbsp;<a class=menu href="../../user.html">User contributions</a><br>
+-->
+	      ·&nbsp;<a class="menu" href="http://www.erlang.org/mirrors.html">Mirrors</a><br>
+	    </span>
+         </td>
+       </tr><tr>
+         <td>
+	    <span class="books">
+            <h2>Erlang Books</h2>
+	    <a 
+href="http://www.pragprog.com/titles/jaerlang/programming-erlang"><img 
+title="" src="file_io_files/jaerlang_small.jpg" border="1/" height="144"
+ width="120"></a><br>
+            <br><br>
+	    <a href="http://oreilly.com/catalog/9780596518189"><img title="" 
+src="file_io_files/oreilly_cover.gif" border="0/" height="157" 
+width="120"></a><br>
+            </span>
+	    <br>
+	    <br>
+	    <br>
+	    <span class="webmaster">For comments or questions about this site, 
+contact
+	    <a class="webmaster" href="mailto:webmaster@erlang.org">webmaster@erlang.org</a></span>
+	  </td>
+	</tr>
+      </tbody></table>
+    </td>
+    <td background="file_io_files/vr.gif" valign="top" width="29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td valign="top">
+
+<p><table bgcolor="#add8e6" border="0" cellpadding="4" cellspacing="0" 
+width="100%"><tbody><tr><td>
+<b>Getting started with Erlang</b></td></tr></tbody></table>
+</p><p>
+
+</p><p><i>The original article and examples was written by Claes 
+Wikstrom
+in 1998. In april 2008, We removed an example that no longer works and
+revised the examples to eliminate warnings and use the modern type tests
+(<tt>when is_list(List)</tt> instead of <tt>when list(List)</tt>).</i></p>
+
+<p>In this document I aim to provide a number
+of small examples of nice Erlang programs. The 
+goal of these examples is to let the reader get started 
+immediataly doing some interesting stuff with the erlang
+programming environment. The document assumes some 
+knowledge about erlang programming in general.
+
+
+</p><h3>Programs in this document</h3>
+
+
+For more hardcore like people who just want to see the source code, 
+I provide a list of all Erlang examples described and 
+commented in this document immediataly. 
+ <p> </p><p>
+
+</p><dl>
+  <dt><a 
+href="http://www.erlang.org/examples/klacke_examples/count_chars.erl">count_chars.erl</a>
+  </dt><dd>Count the number of 'x' chars in a file. Different versions.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/wc.erl">wc.erl</a>
+  </dt><dd>A small wc look alike.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/find.erl">find.erl</a>
+  </dt><dd>A small find look alike.
+
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/slogger.erl">slogger.erl</a>
+  </dt><dd>A simple term logger. There is also a small
+      <a href="http://www.erlang.org/examples/klacke_examples/test.erl">example</a>.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/glogger.erl">glogger.erl</a>
+  </dt><dd>The same logger again with the <code>gen_server</code> 
+module.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/klib.erl">klib.erl</a>
+  </dt><dd>My personal goodies library.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/time_server.erl">time_server.erl</a>
+  </dt><dd>A TCP/IP time server.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/chargen.erl">chargen.erl</a>
+  </dt><dd>A threaded <code>chargen</code> server.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/ftpd.erl">ftpd.erl</a>
+  </dt><dd>A complete ftpd.
+
+
+  </dd><dt><a 
+href="http://www.erlang.org/examples/klacke_examples/gsmines.erl">gsmines.erl</a>
+  </dt><dd>The boring game of mines. Done with the library gs.
+
+</dd></dl>
+
+
+
+ <p>We start off with some examples of file handling.
+Most off the stuff related to file handling resides in the
+module called <a href="http://www.erlang.org/doc/man/file.html">file</a>.
+
+The easist method of finding out which functions that
+are available in the <a href="http://www.erlang.org/doc/man/file.html">file</a>
+ module is
+to read the manual page. The manual page is available
+on UNIX systems by invoking the command <code>% erl -man file</code>
+at the UNIX shell prompt. This of course assumes a correctly installed
+Erlang system. On a Windows box, there is no manual reader but exactly
+the same information is available in HTML format. 
+
+
+ </p><p>Anyway, let's get started with some file IO.
+
+</p><h3>File IO</h3>
+
+<h4>Counting x'es</h4>
+
+Our first example is real simple, the idea is to open a file
+read the contents from the file and count the number of
+characters in the file. A file can be in either of two modes,
+<code>binary</code> or normal. In all our examples here all IO will
+be in <code>binary</code> mode. This means that all IO that comes from
+the file are Erlang <code>binary</code> data objects.
+
+So lets create a new Erlang module. We do that by invoking
+our favourite editor on a file, let's call it "count_chars.erl".
+If we use the famous emacs editor, we can get a whole lot
+of support in our Erlang programming. Turn on all the
+bells and whistles, font-lock-mode and everything.
+Anyway, The head of the file shall be:
+
+<pre><b>
+
+%%%----------------------------------------------------------------------
+%%% File    : count_chars.erl
+%%% Author  : Claes Wikstrom &lt;klacke@bluetail.com&gt;
+%%% Purpose : Count the x chars in a file
+%%% Created : 20 Oct 1998 by Claes Wikstrom &lt;klacke@bluetail.com&gt;
+%%%----------------------------------------------------------------------
+
+-module(count_chars).
+-author('klacke@bluetail.com').
+
+-export([file/1]).
+
+</b></pre>
+
+The actual code to open the file is contained in a function 
+<code>file/1</code>. This function has a minor flaw which we shall 
+soon rectify. But here goes:
+
+<pre><b>
+
+
+
+file(Fname) -&gt;
+    case file:open(Fname, [read, raw, binary]) of
+	{ok, Fd} -&gt;
+	    scan_file(Fd, 0, file:read(Fd, 1024));
+	{error, Reason} -&gt;
+	    {error, Reason}
+    end.
+
+scan_file(Fd, Occurs, {ok, Binary}) -&gt;
+    scan_file(Fd, Occurs + count_x(Binary), file:read(Fd, 1024));
+scan_file(Fd, Occurs, eof) -&gt;
+    file:close(Fd),
+    Occurs;
+scan_file(Fd, _Occurs, {error, Reason}) -&gt;
+    file:close(Fd),
+    {error, Reason}.
+
+
+
+</b></pre>
+
+ <p>
+The <code>file/1</code> function opens the file and reads the characters
+in chunks of 1 k. For each chunk it calls a function 
+<code>count_x/1</code> to do the real counting. This function
+transforms each binary to a list of characters in order
+to be able to traverse and count.
+We have:
+ </p><p>
+</p><pre><b>
+
+
+count_x(Bin) -&gt;
+    count_x(binary_to_list(Bin), 0).
+count_x([$x|Tail], Ack) -&gt;
+    count_x(Tail, Ack+1);
+count_x([_|Tail], Ack) -&gt;
+    count_x(Tail, Ack);
+count_x([], Ack) -&gt;
+    Ack.
+
+
+
+</b></pre>
+
+ <p>Now to compile and run this code we invoke the erlang system at the
+unix prompt and enter the following commands:
+</p><pre><b>
+
+% erl
+Erlang (JAM) emulator version 4.7.3
+ 
+Eshell V4.7.3  (abort with ^G)
+1&gt; c:c(count_chars).
+{ok,count_chars}
+2&gt; count_chars:file("count_chars.erl").
+17
+3&gt; 
+
+</b></pre>
+
+ <p>So the file "count_chars.erl" contains 17 x'es.
+
+
+ </p><p>The abovementioned flaw is that we do not close the file
+in the same function where we opened the file. In this 
+particular case we close it in the function just below, but 
+it is a general good rule to release resources in the source
+code where they are allocated. One way to rectify this here is
+to rewrite the code like:
+ </p><p>
+</p><pre><b>
+
+file(Fname) -&gt;
+    case file:open(Fname, [read, raw, binary]) of
+	{ok, Fd} -&gt;
+	    Res = scan_file(Fd, 0, file:read(Fd, 1024)),
+	    file:close(Fd),
+            Res;
+         ....
+
+</b></pre>
+
+ <p>However we can do better, we can write a general 
+purpose function <code>with_file</code> which feed a 
+user provided <code>Fun</code> with chunks of data until done.
+
+</p><h4>General  purpose file IO</h4>
+
+ <p>The technique of generalizing a common pattern
+of functionality into a framework which uses 
+higher order functions to do the work is a powerful
+lines-of-code saver. So the general purpose function is:
+ </p><p>
+</p><pre><b>
+
+
+
+with_file(File, Fun, Initial) -&gt;
+    case file:open(File, [read, raw, binary]) of
+	{ok, Fd} -&gt;
+	    Res = feed(Fd, file:read(Fd, 1024), Fun, Initial),
+	    file:close(Fd),
+	    Res;
+	{error, Reason} -&gt;
+	    {error, Reason}
+    end.
+
+feed(Fd, {ok, Bin}, Fun, Farg) -&gt;
+    case Fun(Bin, Farg) of
+	{done, Res} -&gt;
+	    Res;
+	{more, Ack} -&gt;
+	    feed(Fd, file:read(Fd, 1024), Fun, Ack)
+    end;
+feed(Fd, eof, Fun, Ack) -&gt;
+    Ack;
+feed(_Fd, {error, Reason}, _Fun, _Ack) -&gt;
+    {error, Reason}.
+
+
+</b></pre>
+
+ <p>The user provides three arguments to the function.
+
+</p><dl>
+
+ <dt><code>File</code>
+ </dt><dd>the name of the file to work on.
+
+ </dd><dt><code>Fun</code>
+ </dt><dd>a functional object which must return either
+     of <code>{more, Ack}</code> or <code>{done, Res}</code> in order to
+     guide the <code>feed</code> loop what to do.
+
+ </dd><dt><code>Initial</code>
+ </dt><dd>the initial ackumulator parameter to the fun.
+
+</dd></dl>
+
+This code is typical general purpose code and we shall
+add it to a library of "nice to have functions". We call
+this library <a 
+href="http://www.erlang.org/examples/klacke_examples/klib.erl">klib.erl</a>.
+
+
+ <p>Now the original <code>count_chars:file/1</code> function
+becomes much shorter.
+ </p><p>
+</p><pre><b>
+
+
+
+file1(File) -&gt;
+    F = fun(Bin, Int) -&gt; 
+		{more, count_x(Bin) + Int}
+	end,
+    klib:with_file(File, F, 0).
+
+
+</b></pre>
+
+ <p>As a matter of fact we can do even better than that, we can 
+use a function defined in "lists.erl" which folds over a list.
+This is admittedly not code that ought to be in the
+first section of a beginner guide but we provide it
+anyway. We have:
+</p><pre><b>
+
+file2(File) -&gt;
+    {ok,B} = file:read_file(File),
+    lists:foldl(fun($x, Ack) -&gt;
+			1 + Ack;
+		   (_, Ack) -&gt;
+			Ack
+		end, 0, binary_to_list(B)).
+
+</b></pre>
+
+ <p> Now we have three version of the same function say we want to
+meassure how fast they are. The mudule "timer" has a function
+called "tc(Mod, Fun, Args)" which executes a function and times it.
+Lets do it at the shell prompt:
+</p><pre><b>
+
+32&gt; timer:tc(count_chars, file, ["index.html"]).
+{59554,68}
+33&gt;  timer:tc(count_chars, file1, ["index.html"]).
+{69939,68}
+34&gt; timer:tc(count_chars, file2, ["index.html"]).
+{335579,68}
+
+
+</b></pre>
+
+ <p>The <code>tc/3</code> function returns a tuple
+<code>{MicroSeconds, Result</code> where <code>MicroSeconds</code> is
+the number of micro seconds it took to eavluate the function and
+<code>Result</code> is the avaluation result.
+
+ </p><p>We see that the first (and most complicated) version is the 
+fastest.
+It takes 63 milli seconds whereas the next version which uses
+the <code>with_file/3</code> function takes 69 milli seconds.
+On the other hand the most beautiful version, <code>file2/1</code> which
+folds over the entire lists takes an awful 337 milli seconds.
+
+
+
+</p><h4>Word count</h4>
+
+We continue with a program which is a little bit 
+more useful than just counting the 'x' characters in a 
+random file. We want to write a program that counts the number of
+words, chars and lines in a file.
+We wish the function to have an interface
+
+We wish the module to have an interface<p>
+
+<code>wc:file(File)</code><br>
+
+<code>wc:files(FileList)</code>
+
+</p><pre><b>
+
+-module(wc).
+
+-import(lists, [map/2, foreach/2]).
+-export([file/1, files/1]).
+
+file(File) -&gt;
+    output([gfile(File)]).
+
+gfile(File) -&gt;
+    Fun = fun(Bin, Count) -&gt;
+		  count_bin(binary_to_list(Bin), inspace, Count)
+	  end,
+    {File, klib:with_file(File, Fun, {0,0,0})}.
+
+
+count_bin([H|T], Where, {C,W,L}) -&gt;
+    case classify_char(H) of
+	newline  when Where == inspace -&gt;
+	    count_bin(T, inspace, {C+1, W, L+1});
+	newline when Where == inword -&gt;
+	    count_bin(T, inspace, {C+1, W+1, L+1});
+	space  when Where == inspace -&gt;
+	    count_bin(T, inspace, {C+1, W, L});
+	space  when Where == inword -&gt;
+	    count_bin(T, inspace, {C+1, W+1, L});
+	char -&gt;
+	    count_bin(T, inword, {C+1, W, L})
+    end;
+count_bin([], inword, {C, W, L}) -&gt;
+    {more, {C, W+1, L}};
+count_bin([], inspace, {C, W, L}) -&gt;
+    {more, {C, W, L}}.
+
+
+classify_char($ ) -&gt;
+    space;
+classify_char($\t) -&gt;
+    space;
+classify_char($\n) -&gt;
+    newline;
+classify_char(_) -&gt;
+    char.
+
+files(Files) -&gt;
+    output(map(fun(F) -&gt; gfile(F) end, Files)).
+
+output(Counts) -&gt;
+    io:format("~-25s ~-10s ~-10s ~-10s~n",
+	      ["file", "chars", "words", "lines"]),
+    foreach(fun({File, {C,W,L}}) -&gt;
+		    ok = io:format("~-25s ~-10w ~-10w ~-10w~n", 
+			      [File, C, W, L])
+	    end, Counts).
+
+
+</b></pre>
+
+This function is really not very representable as an
+example of file IO. All we do is call on the 
+previously define <code>klib:with_file/3</code> function
+with an appropriate Fun. An example session with the erlang
+shell is:
+
+<pre><b>
+
+60&gt; {ok, L} = file:list_dir("."), wc:files(L).
+file                      chars      words      lines     
+wc.beam                   2079       40         21        
+count_chars.beam          1796       31         22        
+klacke_ex.html~           6173       897        219       
+test                      11         3          1         
+wc.erl~                   587        46         27        
+klacke_ex.html.orig       6173       897        219       
+klacke_ex.html            7642       1079       286       
+wc.erl                    1661       176        73        
+count_chars.erl           1767       198        87        
+
+
+</b></pre>
+
+<h4>Finding files</h4>
+
+Next example is a function that 'finds' files and does
+things with the files it finds. For example we might
+want to look for all erlang files in a directory tree and
+recompile them. We want to be able to write things like
+<pre><b>
+
+find:files("/home/klacke", 
+           ".*\.erl", fun(F) -&gt; {File, c:c(File)} end)
+
+</b></pre>
+In order to fins all my erlang files and compile them.
+We have three arguments. 
+
+<ul>
+  <li> A top directory where to start the search
+
+  </li><li> A regular expression that must match the files.
+
+  </li><li> A Fun to perform some action on the files we find.
+</li></ul>
+
+The source code is:
+
+<pre><b>
+
+-module(find).
+-author('klacke@bluetail.com').
+-include_lib("kernel/include/file.hrl").
+
+-export([files/3]).
+
+files(Top, Re, Action) -&gt;
+    case file:list_dir(Top) of
+	{ok, Files} -&gt;
+	    files(Top, Files, Re, Action, []);
+	{error, Reason}  -&gt;
+	    {error, {Top, Reason}}
+    end.
+
+files(Top, [F|Tail], Re, Action, Ack) -&gt;
+    F2 = Top ++ "/" ++ F,
+    case file:read_file_info(F2) of
+	{ok, FileInfo} when FileInfo#file_info.type == directory -&gt;
+	    case files(F2, Re, Action) of
+		{error, Reason} -&gt;
+		    {error, Reason};
+		List -&gt;
+		    files(Top, Tail, Re, Action, List ++ Ack)
+	    end;
+	{error, Reason} -&gt;
+	    {error, {F2, Reason}};
+	{ok, FileInfo} when FileInfo#file_info.type == regular -&gt;
+	    case catch regexp:match(F, Re) of
+		{match, _,_} -&gt;
+		    files(Top, Tail, Re, Action, [Action(F2) | Ack]);
+		nomatch -&gt;
+		    files(Top, Tail, Re, Action, Ack);
+		{error, Reason} -&gt;
+		    {error, {F2, {regexp, Reason}}}
+	    end;
+	Other -&gt;
+	    files(Top, Tail, Re, Action, Ack)
+    end;
+
+files(_Top, [], _Re, _Action, Ack) -&gt;
+    Ack.
+    
+
+</b></pre>
+
+The code includes the <code>file_info</code> record definition
+from the <code>file.hrl</code> include file. The code is 
+completely straigtforward since it simply reads the 
+<code>file_info</code> records recursively and applies the 
+supplied function. It also includes the ".hrl" file 
+by means of an "include_lib" compiler dirctive.
+
+
+<h4>A simple term logger</h4>
+ <p>In this final section on file IO we provide a simple
+term logger that writes Erlang terms to a file.
+
+ </p><p> The BIF <code>term_to_binary/1</code> produces
+a binary data object from any term. Such a binary
+can be written to a file. The reverse operation is
+<code>binary_to_term/1</code> which can be used to reproduce
+the orignal term. The format we choose to have on the file
+is to prepend each term with a four (4) byte length field
+in order to indicate the length of the actual term.
+
+The logger runs as a separate process and we shall
+provide two different versions of the logger, one
+written with plain Erlang and the other by utilizing 
+the generic server <code>gen_server</code> module.
+
+One function which is used by the logger is the
+function of transforming an integer to a four byte list
+and vice versa. This function is added to the 
+<a href="http://www.erlang.org/examples/klacke_examples/klib.erl">klib.erl</a>
+ library.
+Here is the code:
+</p><pre><b>
+
+i32(B) when is_binary(B) -&gt;
+    i32(binary_to_list(B, 1, 4));
+i32([X1, X2, X3, X4]) -&gt;
+    (X1 bsl 24) bor (X2 bsl 16) bor (X3 bsl 8) bor X4;
+i32(Int) when integer(Int) -&gt;
+    [(Int bsr 24) band 255,
+     (Int bsr 16) band 255,
+     (Int bsr  8) band 255,
+     Int band 255].
+
+</b></pre>
+
+
+ <p>It is also nice to be able to read an integer from
+a file, the code in klib.erl is:
+</p><pre><b>
+
+getint32(F) -&gt;
+    {ok, B} = file:read(F, 4),
+    i32(B).
+
+</b></pre>
+
+
+This is what I call an aggressive function. It 
+assumes that everything goes well and crashes
+hard if for example the read call returns <code>eof</code>
+or if the read attempt should fail for any other reason.
+
+The module exports a number of functions, in
+particular:
+<pre><b>
+
+
+-module(slogger).
+-author('klacke@bluetail.com').
+
+-export([start/0, start/1, stop/0, log/1, upread/1, truncate/0]).
+
+</b></pre>
+
+ <p>We need to be able to stop and start the server.
+The client functions are:
+
+</p><dl>
+  <dt><code>log/1</code>
+  </dt><dd>Log a term to the end of the file.
+
+  </dd><dt><code>truncate/0</code>
+  </dt><dd>Truncate the log file.
+
+  </dd><dt><code>upread/1</code>
+  </dt><dd>Read all the terms in the logfile
+      and apply <code>Fun</code> to each and every term.
+</dd></dl>
+
+The start and stop code is the classical traditional style
+Erlang start server code. This code has flaws, bur we will
+come back to that in the next session.
+We have:
+
+<pre><b>
+
+-define(LOGFILE, "slog.log").
+
+start() -&gt;
+    start(?LOGFILE).
+
+start(F) -&gt;
+    case whereis(?MODULE) of
+	undefined -&gt;
+	    register(?MODULE, spawn(?MODULE, loop0, [F]));
+	Pid -&gt;
+	    true
+    end.
+
+stop()-&gt;
+    req(stop).
+
+req(R) -&gt;
+    ?MODULE ! {self(), R},
+    receive
+	{?MODULE, Reply} -&gt;
+	    Reply
+    end.
+
+
+</b></pre>
+
+ <p>The loop function that is spawned by the the start
+function has two part, an initialization part
+and a loop part. The coe is:
+</p><pre><b>
+
+
+loop0(FileName) -&gt;
+    case file:open(FileName, [read, write, raw, binary]) of
+	{ok, Fd} -&gt;
+	    {ok, Eof} = file:position(Fd, eof),
+	    file:position(Fd, bof),
+	    FilePos = position_fd(Fd, 0),
+	    maybe_warn(FilePos, Eof),
+	    loop(Fd);
+	{error, Reason} -&gt;
+	    exit(Reason)
+    end.
+
+maybe_warn(FilePos, Eof) -&gt;
+    if
+	FilePos == Eof -&gt;
+	    ok;
+	true -&gt;
+	    warn("~w bytes truncated \n", 
+		 [Eof - FilePos])
+    end.
+	    
+
+
+</b></pre>
+
+ <p>We have added some extra code to check the logfile
+when it is opened. We need to position the file descriptor
+to the end of the logfile. To do that we could have
+called <code>file:position(Fd, eof)</code>, however we
+need to cater for the case where the last logger term in
+the previous section was corrupted due to an interrupted 
+write operation. Thw function that does the check is:
+
+</p><pre><b>
+
+
+position_fd(Fd, LastPos) -&gt;
+    case catch getint32(Fd) of
+	Int when is_integer(Int) -&gt;
+	    case file:read(Fd, Int) of
+		{ok, B} when size(B) ==  Int -&gt;
+		    position_fd(Fd, LastPos + 4 + Int);
+		_ -&gt;
+		    file:position(Fd, LastPos),
+		    file:truncate(Fd)
+	    end;
+	_ -&gt;
+	    file:position(Fd, LastPos),
+	    file:truncate(Fd),
+	    LastPos
+    end.
+
+
+</b></pre>
+
+ <p>The <code>position_fd/2</code> function returns 
+last file position that was ok. If this is equal to the 
+physical file position, all is ok.
+
+
+So, we are approaching the real code that does the actual
+logging work. The <code>loop/1</code> server loop.
+</p><pre><b>
+
+loop(Fd) -&gt;		    
+    receive
+	{From, {log, Bin}} -&gt;
+	    From ! {?MODULE, log_binary(Fd, Bin)};
+	{From, {upread, Fun}} -&gt;
+	    From ! {?MODULE, upread(Fd, Fun)};
+	{From, truncate} -&gt;
+	    file:position(Fd, bof),
+	    file:truncate(Fd),
+	    From ! {?MODULE, ok};
+	{From, stop} -&gt;	
+	    file:close(Fd),
+	    From ! {?MODULE, stopped},
+	    exit(normal)
+    end,
+    loop(Fd).
+
+
+</b></pre>
+
+ <p>The <code>truncate</code> and the <code>stop</code>
+requests are handled immediataly in the loop whereas the
+request to <code>log</code> and <code>upread</code> are handled
+ by special help functions. First we have the <code>log_binary/2</code>
+function:
+
+</p><pre><b>
+
+log_binary(Fd, Bin) -&gt;
+    Sz = size(Bin),
+    case file:write(Fd, [i32(Sz), Bin]) of
+	ok -&gt;
+	    ok;
+	{error, Reason} -&gt;
+	    warn("Cant't write logfile ~p ", [Reason]),
+	    {error, Reason}
+    end.
+    
+
+</b></pre>
+
+ <p>The only noticeable thing here is the type of the
+structure that is passed to <code>file:write/2</code> for IO.
+It is a list on the form <code>[[int, int, int, int], binary]</code>.
+This structure will be flattened by the port. This applies to all ports
+and if the Port supports the so called <code>writev()</code> interface
+(which is documented elsewhere) the <code>writev()</code> function
+of the native operating system will be called with an 
+array length of <code>2</code> where the first array will hold the
+four bytes produced by the call to <code>i32()</code> and the second 
+array
+will hold the actual binary data.
+
+ </p><p>Finally the function to do the upreading, i.e a function
+that blocks the server for logging and then traverses the log 
+and applies a function to each and every logged item is:
+</p><pre><b>
+
+
+upread(Fd, Fun) -&gt;		
+    {ok, Curr} = file:position(Fd, cur),
+    file:position(Fd, bof),
+    upread(Fd, catch get_term(Fd), Fun).
+
+upread(Fd, {'EXIT', _}, Fun) -&gt;
+    ok;
+upread(Fd, Term, Fun) -&gt;
+    Fun(Term),
+    upread(Fd, catch get_term(Fd), Fun).
+    
+    
+get_term(Fd) -&gt;
+    I = getint32(Fd),
+    {ok, B} = file:read(Fd, I),
+    binary_to_term(B).
+
+
+</b></pre>
+
+ <p>And finally the client functions to access the server:
+
+</p><pre><b>
+
+upread(Fun) -&gt;
+    req({upread, Fun}).
+
+truncate() -&gt;
+    req(truncate).
+
+log(Term) -&gt;
+    req({log, term_to_binary(Term)}).
+
+
+</b></pre>
+
+ <p>A typical little caveat here with the <code>upread/1</code> function
+is that the client function is sitting in a receive statement waiting 
+for
+<code>upread/1</code> to perform its work. It is thus not possible to
+have the <code>upread/1</code> function send all the terms to the 
+client.
+(Since the client is allready suspended).
+To do that, we need an auxilliary process.
+
+Here is a little example session at the shell prompt:
+</p><pre><b>
+
+2&gt; slogger:start().
+true
+3&gt; slogger:log({abc, "cba"}).
+ok
+4&gt; slogger:log(code:which(slogger)).  
+ok
+5&gt; slogger:upread(fun(X) -&gt;  io:format("~p~n", [X])  end).
+{abc,"cba"}
+"/home/super/klacke/doc/examples/slogger.jam"
+ok
+6&gt; 
+
+
+</b></pre>
+
+
+<h4>A simple term logger (again)</h4>
+In this section we have rewritten the above term logger 
+but this time using the <code>gen_server</code> module
+as a utility to get help with the process structure.
+ <p><code>gen_server</code>s are extremely powerful and
+easy to use. The absolutely easiest way to write a 
+gen server is to invoke the <code>gen_server</code>
+skeleton from the emacs mode while editing. 
+
+ </p><p>The entire framework of a "do nothing" gen server
+is generated and we just fill in the details. This way we
+get all the goodies that come from gen servers in general.
+They can be upgraded and downgraded wile running, they can
+be debugged and traced and they fit into the general
+<code>application</code> concept of Erlang.
+
+ </p><p>The code is available in <a 
+href="http://www.erlang.org/examples/klacke_examples/glogger.erl">glogger.erl</a>.
+
+
+</p><h3>Socket IO</h3>
+
+In this section we shall give a number of examples
+of tcp/ip socket IO. Erlang is well suited for the
+implementation of a number of the classical internet
+tcp/ip based protocols.  The API to the TCP/UDP/IP etc
+can be found it the <code>gen_tcp</code>, <code>gen_udp</code>
+and the <code>inet</code> modules. All socket code written in
+erlang is the same regardless of the underlying operating system
+
+
+ <p>We start with a simple 
+time server, it receives requests on TCP port 2345
+and replies with a string indicating the current time.
+
+</p><h4>A time server</h4>
+
+
+ <p>The complete code is <a 
+href="http://www.erlang.org/examples/klacke_examples/time_server.erl">here</a>
+ and it is
+extremely simple. It just opens a socket a replies with the
+current data and time to anyone that connects to the server.
+
+ </p><p>We have:
+</p><pre><b>
+
+start(Pno) -&gt;
+    spawn(?MODULE, loop0, [Pno]).
+
+loop0(Port) -&gt;
+    case gen_tcp:listen(Port, [binary, {packet, 0}, {active, false}]) of
+	{ok, LSock} -&gt;
+	    loop(LSock);
+	_ -&gt;
+	    stop
+    end.
+
+loop(Listen) -&gt;
+    case gen_tcp:accept(Listen) of
+	{ok, S} -&gt;
+	    gen_tcp:send(S, io_lib:format("~p~n", [{date(), time()}])),
+	    gen_tcp:close(S),
+	    loop(Listen);
+	_ -&gt;
+	    loop(Listen)
+    end.
+
+
+</b></pre>
+
+ <p>This is is a so called iterative server. It finishes each request 
+until
+it accepts a new request. Another type of TCP/IP server creates a new
+process for each request. This is known as a concurrent or a threaded 
+server.
+As we can expect erlang is well suited for the implementation of
+threaded servers. 
+
+</p><h4>A threaded chargen server</h4>
+
+ <p>One of the most strange servers on many UNIX machines is the
+<code>chargen</code> server. It typically resides on port 19 and replies
+ with
+an endless stream of printable ASCII characters when connected to. 
+
+ </p><p>It can thus act as an indefinite
+source of network input, typically used to test various applications.
+ </p><p>Nevertheless, this type of server need to be threaded. Thus we 
+provide an
+example here with a threaded <a 
+href="http://www.erlang.org/examples/klacke_examples/chargen.erl">chargen</a>
+ server. 
+
+ </p><p>The best way to write a threaded TCP server in Erlang is to 
+first create the listen socket, then create a new worker process which 
+does the call to <code>accept</code>. Once the accept is complete the
+worker process notifies the servere about this and the server can create
+yet another worker process. First we need then initial startup code:
+
+</p><pre><b>
+
+-define(PORTNO, 2019).
+
+start_link() -&gt;
+    start_link(?PORTNO).
+start_link(P) -&gt;
+    spawn_link(?MODULE, loop0, [P]).
+
+loop0(Port) -&gt;
+    case gen_tcp:listen(Port, [binary, {reuseaddr, true},
+			       {packet, 0}, {active, false}]) of
+	{ok, LSock} -&gt;
+	    spawn(?MODULE, worker, [self(), LSock]),
+	    loop(LSock);
+	Other -&gt;
+	    io:format("Can't listen to socket ~p~n", [Other])
+    end.
+
+</b></pre>
+
+
+ <p>This code spawns off the initial worker process and goes into
+a loop. The loop is simple:
+
+</p><pre><b>
+
+loop(S) -&gt;
+    receive
+	next_worker -&gt;
+	    spawn_link(?MODULE, worker, [self(), S])
+    end,
+    loop(S).
+
+
+</b></pre>
+
+ <p>It listens for <code>next_worker</code> messages and spawns
+off a new worker for each such message. This way we are guaranteed to
+always have exactly one worker waiting to accept on the socket.
+The worker process accepts the socket and start to generate
+characters. We have:
+</p><pre><b>
+
+worker(Server, LS) -&gt;
+    case gen_tcp:accept(LS) of
+	{ok, Socket} -&gt;
+	    Server ! next_worker,
+	    gen_chars(Socket, 32);
+	{error, Reason} -&gt;
+	    Server ! next_worker,
+	    io:format("Can't accept socket ~p~n", [Reason])
+    end.
+
+
+gen_chars(Socket, Char) -&gt;
+    Line = make_line(Char, 0),
+    case gen_tcp:send(Socket, Line) of
+	{error, Reason} -&gt; exit(normal);
+	ok -&gt; gen_chars(Socket, upchar(Char))
+    end.
+
+
+make_line(Char, 70) -&gt;
+    [10];
+make_line(127, Num) -&gt;
+    make_line(32, Num);
+make_line(Char, Num) -&gt;
+    [Char | make_line(Char+1, Num+1)].
+
+upchar(Char) -&gt;
+    if
+	Char + 70 &gt; 127 -&gt;
+	    32 + (127 - Char);
+	true -&gt;
+	    Char + 70
+    end.
+
+
+
+</b></pre>
+
+<h4>Name server </h4>
+ <p>We continue with a simple name server, a server that sits and
+listens for TCP request on a port and then either responds to
+"GET" requests or "PUT" request. We want the server to be threaded
+so we have a similar setup phase as the <code>chargen</code> code.
+
+
+
+
+
+</p><h4>Socket server framework</h4>
+
+ <p>The <code>chargen</code> server from the previous section
+exhibits a behaviour which is truly typical for many internet
+servers. Many many tcp/ip servers have the typical sequence of
+listen followed by a loop of accept calls. We can parametrize this
+behaviour in a manner simmilar to the <code>with_file/2</code> function
+from the first section. We want to have a function called
+<code>with_socket/2</code> which takes a Portnumber and a <code>Fun</code>
+as parameters and the runs a standard tcp/ip server on the port number 
+and
+applies <code>Fun</code> in a separate process to all requests.
+This is indeed possible and the code for the <code>with_socket/2</code>
+function (ofcourse) resides in <a 
+href="http://www.erlang.org/examples/klacke_examples/klib.erl">klib.erl</a>.
+
+This code has some more luggage than the previous 
+<code>chargen</code> server, for example we have client functions
+to query the server about it's status as so on.
+The code explained:
+
+</p><pre><b>
+
+with_socket(Port, Fun) -&gt;
+    spawn(?MODULE, with_socket0, [Port, Fun]).
+
+with_socket0(Port, Fun) -&gt;
+    process_flag(trap_exit, true),
+    case gen_tcp:listen(Port, [binary, {packet, 0}, 
+			       {reuseaddr, true},
+			       {active, false}]) of
+	{ok, LSock} -&gt;
+	    P = spawn_link(?MODULE, sock_handler, [self(), Fun, LSock]),
+	    sock_loop(P, Fun, 1, nil, LSock);
+	Other -&gt;
+	    Other
+    end.
+
+
+</b></pre>
+
+
+
+
+<h4>An ftp daemon</h4>
+
+ <p>In this section we introduce a complete implementation of
+an ftp daemon according to RFC 765. We don't comment on the 
+code merely provide it. The server is almost 1000 lines of Erlang code.
+The code is at <a 
+href="http://www.erlang.org/examples/klacke_examples/ftpd.erl">ftpd.erl</a>
+
+</p><h3>Gui programming</h3>
+
+ 
+ <p> We provide the boring game of mines as an example of an gs based
+program: <a 
+href="http://www.erlang.org/examples/klacke_examples/gsmines.erl">gsmines.erl</a>
+
+
+    </p></td>
+  </tr>
+  <tr>
+    <td colspan="3" height="34">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center" bgcolor="#add8e6" height="34">
+      Last updated &nbsp; 2009-10-13 16:39 UTC
+
+    </td>
+  </tr>
+</tbody></table>
+<script src="file_io_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-3045895-1";
+urchinTracker();
+</script>
+
+
+<div class="GleeThemeDefault" id="gleeBox" style="display: none; top: 
+35%;"><input style="font-size: 50px;" class="GleeThemeDefault" 
+id="gleeSearchField" type="text"><div id="gleeSub"><div id="gleeSubText">Nothing
+ selected</div><div id="gleeSubActivity"></div><div id="gleeSubURL"></div></div></div></body></html>
