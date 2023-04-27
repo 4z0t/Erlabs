@@ -1,6 +1,8 @@
 -module(lab4).
 
--export([start/1, send_to_child/2, stop/0, child_thread/1, parent_thread/1, par_partition/3]).
+-export([
+    start/1, send_to_child/2, stop/0, child_thread/1, parent_thread/1, par_partition/3, start/0
+]).
 
 checkProc(ProcName, Success, Fail) ->
     PID = whereis(ProcName),
@@ -96,15 +98,39 @@ stop() ->
         end
     ).
 
-%%% 
+%%%
+%%%
+split_list(L, 0) -> error;
+split_list(L, Len) when length(L) < Len -> [L];
+split_list(L, Len) -> [lists:sublist(L, 1, Len) | split_list(lists:sublist(L, Len, Len), Len)].
 
-par_partition_thread(Parent, F, List) ->
+par_partition_thread_proc() ->
+    receive
+        {From, F, L} ->
+            From ! lists:partition(F, L);
+        ok ->
+            ok
+    end.
+
+
+
+par_partition_thread(Parent, F, List, Result) ->
+
     Parent ! lists:partition(F, List).
 
-
+par_partition(F, List) ->
+    Max = erlang:system_info(process_limit),
+    self(),
+    receive
+        ok -> ok
+    end.
 
 par_partition(F, List, Options) ->
     self(),
     receive
         ok -> ok
     end.
+
+start() ->
+    split_list([-5, -4, 3, 5, 2, -3, 2, 1, 0], 3).
+%par_partition(fun(X) -> X > 0 end, [-5, -4, 3, 5, 2, -3, 2, 1, 0]).
