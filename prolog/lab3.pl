@@ -92,3 +92,45 @@ nnf(A -> B, NNF) :-
     nnf(NNF1 \/ NNF2, NNF).
 
 %5
+
+% Проверка, является ли число простым
+is_prime(2).
+is_prime(3).
+is_prime(P) :-
+    P > 3,
+    integer(P),
+    P mod 2 =\= 0,
+    \+ has_factor(P, 3).
+
+% Проверка, есть ли у числа делители кроме 1 и самого числа
+has_factor(N, Factor) :-
+    N mod Factor =:= 0.
+has_factor(N, Factor) :-
+    Factor * Factor < N,
+    NextFactor is Factor + 2,
+    has_factor(N, NextFactor).
+
+% Разбиение числа на простые множители
+prime_factors(1, []).
+prime_factors(N, [Factor|Factors]) :-
+    N > 1,
+    ( is_prime(N) ->
+    Factor = N,
+    Factors = []
+    ; N mod 2 =:= 0 ->
+    Factor = 2,
+    N1 is N // 2,
+    prime_factors(N1, Factors)
+    ; next_prime_factor(N, 3, Factor),
+    N1 is N // Factor,
+    prime_factors(N1, Factors)
+    ).
+
+% Поиск следующего простого множителя
+next_prime_factor(N, Factor, Factor) :-
+    N mod Factor =:= 0,
+    is_prime(Factor).
+next_prime_factor(N, Factor, NextFactor) :-
+    N mod Factor =\= 0,
+    NextFactor is Factor + 2,
+    next_prime_factor(N, NextFactor, _).
