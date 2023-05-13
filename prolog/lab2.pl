@@ -12,11 +12,11 @@ list([_|T]) :- list(T).
 duplicated([],[]).
 duplicated([_|_],[]):-false.
 duplicated([],[_|_]):-false.
-duplicated([H11|[H12|T1]], [H2|T2]):-
-    H11==H2,H12==H2,
+duplicated([H|[H|T1]], [H|T2]):-
     duplicated(T1,T2).
     
 stutter(L1,L2) :- duplicated(L2,L1).
+
 
 
 
@@ -66,7 +66,7 @@ gray([], []).
 gray([_], [[0],[1]]).
 gray([_|T], Code):-
     gray(T, C),
-	add_element_to_lists(0, C, Code0),
+	  add_element_to_lists(0, C, Code0),
     add_element_to_lists(1, C, Code1),
     append(Code0, Code1, Code).
 
